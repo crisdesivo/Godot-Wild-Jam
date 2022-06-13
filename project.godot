@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://Bullet.gd"
 }, {
 "base": "Reference",
+"class": "BulletAttack",
+"language": "GDScript",
+"path": "res://BulletAttack.gd"
+}, {
+"base": "Reference",
 "class": "ColorTile",
 "language": "GDScript",
 "path": "res://addons/color-palette/ColorTile.gd"
@@ -41,6 +46,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Bullet": "",
+"BulletAttack": "",
 "ColorTile": "",
 "Enemy": "",
 "FlexGridContainer": "",

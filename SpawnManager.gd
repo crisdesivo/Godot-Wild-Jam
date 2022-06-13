@@ -17,7 +17,7 @@ func _ready():
 
 
 func spawnGhost():
-    var ghost = Enemy.new(5, 0.5, true, load("res://Assets/ghostie.png"), 0.2)
+    var ghost = Enemy.new(5, 0.7, true, load("res://Assets/ghostie.png"), 0.2)
     # var ghost = Enemy.new(10, 2, true, load("res://Assets/spot.png"))
     # ghost.visible = true
     var location = rng.randi_range(0, 3)

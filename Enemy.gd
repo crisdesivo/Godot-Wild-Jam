@@ -11,7 +11,7 @@ var lastHit = 0.0
 var lastBoost = 0.0
 # var name = "enemy"
 
-func _init(maxHP_: float, speed_: int, flies_: bool, texture_: Texture, scale_: float):
+func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float):
     name = "enemy"
     add_to_group("enemies")
     self.maxHP = maxHP_
@@ -44,14 +44,14 @@ func _ready():
 func _process(delta):
     lastHit += delta
     lastBoost += delta
-    if lastBoost >= 1:
-        speed += 0.1
+    if lastBoost >= 1.01:
+        speed *= 1.01
         lastBoost = 0
     var playerPosition = player.get_global_position()
     var enemyPosition = self.get_global_position()
     var distance = (playerPosition - enemyPosition).normalized()
     # position += distance * speed * delta
-    print(distance)
+    # print(distance)
     translate(distance * speed * 100 * delta)
 
     # position.x -= 0.5

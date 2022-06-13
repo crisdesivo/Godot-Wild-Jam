@@ -1,0 +1,6 @@
+Fan attack,Attacks in a fan like shape,Linear,5,40,Equidistant,2,10,infinite,0.5,1,1,1
+Shotgun,Shoots bullets like a shotgun,Linear,4,30,Random,4,8,0,infinite,1,1,1
+Water gun,Shoots a water gun,Gravity,10,10,Random,0.1,4,1,infinite,0.1,1,1
+Cannonball,Fire a projectile with high gravity,Gravity,1,3,Random,20,10,infinite,infinite,2,2.5,2.5
+Ricocher,Fire a bullet that can recocher 2 times,Linear,1,2,Random,8,15,1,infinite,0.5,2,0.5
+Shockwave,Fires bullets all around you,Linear,12,360,Equidistant,10,8,1,1.5,5,1,3
