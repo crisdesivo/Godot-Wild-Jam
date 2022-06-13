@@ -54,7 +54,7 @@ func _process(delta):
     else:
         verticalSpeed = 0
     moveVector += Vector2(0, verticalSpeed)
-    translate(moveVector*10)
+    translate(moveVector*2)
     if falling:
         timeJumped += delta
         if self.position.y > get_viewport().size.y - $Sprite.texture.get_height()*$Sprite.scale.y:
@@ -73,7 +73,6 @@ func jump():
 
 func shoot(direction):
     # create a new bullet
-
     var bullet = Bullet.new(position, direction, 2, 3, 1, "linear", 0)
     get_parent().add_child(bullet)
 

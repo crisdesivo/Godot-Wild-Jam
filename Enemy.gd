@@ -2,11 +2,13 @@ extends Sprite
 
 class_name Enemy
 
+var player
 var maxHP: float
 var currentHP: float
 var speed: float
 var flies: bool
 var lastHit = 0.0
+var lastBoost = 0.0
 # var name = "enemy"
 
 func _init(maxHP_: float, speed_: int, flies_: bool, texture_: Texture, scale_: float):
@@ -34,13 +36,26 @@ func _init(maxHP_: float, speed_: int, flies_: bool, texture_: Texture, scale_: 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    player = get_parent().get_parent().get_node("Player")
+
     pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     lastHit += delta
-    position.x -= 0.5
-    position.y += 0.5
+    lastBoost += delta
+    if lastBoost >= 1:
+        speed += 0.1
+        lastBoost = 0
+    var playerPosition = player.get_global_position()
+    var enemyPosition = self.get_global_position()
+    var distance = (playerPosition - enemyPosition).normalized()
+    # position += distance * speed * delta
+    print(distance)
+    translate(distance * speed * 100 * delta)
+
+    # position.x -= 0.5
+    # position.y += 0.5
 
     if lastHit >= 0.1:
         self_modulate = Color(1, 1, 1, 1)
