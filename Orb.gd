@@ -1,163 +1,65 @@
-extends Node2D
+class_name Orb
 
+var bulletMovement: String
+var bulletsPerShot: int
+var spreadAngle: float
+var spreadDistribution: String
+var damagePerBullet: int
+var bulletSpeed: float
+var pierce: int
+var bulletLifetime: float
+var reloadTime: float
+var timeSinceShot: float
+var bulletTexture: Texture
+var numberOfJumps: int
+var jumpReload: float
+var shootRotationMultiplier: float
+var bulletParent_: Node
+var player_: Node
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-var reloadTime = 0.5
-var timeSinceShot = reloadTime
-var bulletTexture = load("res://Assets/orb1.png")
-var verticalSpeed = 0
-var falling = true
-var jumpReload = 0.5
-var timeJumped = 0
-var downAcceleration = 0.05
-var stepRotation = 1*2*3.14/180
-var shootRotationMultiplier = -15
-var downGravity = 0.05
-var maxLateralSpeed = 3
-var currentLateralSpeed = 0
-var lateralAcceleration = 0.1
-var verticalSpeedConstant = 2
-var maxVerticalSpeed = 4
-var jumpSpeed = 3
+var orbs = {
+    # "Linear", 5, 45, "Equidistant", 1, 10, 0, 0.5
+    "Fan": {
+        "bulletMovement": "Linear",
+        "bulletsPerShot": 5,
+        "spreadAngle": 45,
+        "spreadDistribution": "Equidistant",
+        "damagePerBullet": 1,
+        "bulletSpeed": 10,
+        "pierce": 0,
+        "bulletLifetime": 0.5,
+        "reloadTime": 1,
+        "bulletTexture": load("res://Assets/orb1.png"),
+        "numberOfJumps": -1,
+        "jumpReload": 0.5,
+        "shootRotationMultiplier": -15
+    }
 
+}
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-    # var enemy = Enemy.new(10, 1, false, bulletTexture)
-    # enemy.position = Vector2(100, 100)
-    # get_parent().add_child(enemy)
-    # print(enemy)
-    pass
+func _init(orbName: String, bulletsParent: Node, player: Node):
+    self.bulletMovement = orbs[orbName]["bulletMovement"]
+    self.bulletsPerShot = orbs[orbName]["bulletsPerShot"]
+    self.spreadAngle = orbs[orbName]["spreadAngle"]
+    self.spreadDistribution = orbs[orbName]["spreadDistribution"]
+    self.damagePerBullet = orbs[orbName]["damagePerBullet"]
+    self.bulletSpeed = orbs[orbName]["bulletSpeed"]
+    self.pierce = orbs[orbName]["pierce"]
+    self.bulletLifetime = orbs[orbName]["bulletLifetime"]
+    self.reloadTime = orbs[orbName]["reloadTime"]
+    self.bulletTexture = orbs[orbName]["bulletTexture"]
+    self.numberOfJumps = orbs[orbName]["numberOfJumps"]
+    self.jumpReload = orbs[orbName]["jumpReload"]
+    self.shootRotationMultiplier = orbs[orbName]["shootRotationMultiplier"]
+    self.bulletParent_ = bulletsParent
+    self.timeSinceShot = self.reloadTime
+    self.player_ = player
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-    timeSinceShot += delta
-    # rotate the node 1 degree (in redians)
-    $Sprite.rotate(stepRotation)
-    # if space bar is pressed rotate backwards
-    if Input.is_action_pressed("click"):
-        if timeSinceShot > reloadTime:
-            timeSinceShot = 0
-            var direction = (get_viewport().get_mouse_position() ) - self.position
-            direction = direction.normalized()
-            self.shoot(direction)
-            $Sprite.rotate(shootRotationMultiplier*stepRotation)
-        # var enemy = Enemy.new(10, 1, false, bulletTexture)
-        # enemy.position = get_viewport().get_mouse_position()
-        # get_parent().add_child(enemy)
+func shoot():
+    if self.timeSinceShot >= self.reloadTime:
+        self.timeSinceShot = 0
+        # static func shoot(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
         
-    var moveVector = Vector2()
-    if Input.is_action_pressed("ui_left"):
-        if timeSinceShot > reloadTime:
-            timeSinceShot = 0
-            shoot(Vector2(-1, 0))
-            $Sprite.rotate(shootRotationMultiplier*stepRotation)
-    elif Input.is_action_pressed("ui_right"):
-        if timeSinceShot > reloadTime:
-            timeSinceShot = 0
-            shoot(Vector2(1, 0))
-            $Sprite.rotate(shootRotationMultiplier*stepRotation)
-    elif Input.is_action_pressed("ui_up"):
-        if timeSinceShot > reloadTime:
-            timeSinceShot = 0
-            shoot(Vector2(0, -1))
-            $Sprite.rotate(shootRotationMultiplier*stepRotation)
-    elif Input.is_action_pressed("ui_down"):
-        if timeSinceShot > reloadTime:
-            timeSinceShot = 0
-            shoot(Vector2(0, 1))
-            $Sprite.rotate(shootRotationMultiplier*stepRotation)
-
-    if Input.is_action_pressed("up"):
-        jump()
-    if Input.is_action_pressed("down"):
-        verticalSpeed = max(0, verticalSpeed)
-        verticalSpeed += downAcceleration
-    if Input.is_action_pressed("left"):
-        # moveVector += Vector2(-1, 0)
-        currentLateralSpeed = max(-maxLateralSpeed, currentLateralSpeed - lateralAcceleration)
-        $Body.flip_h = true
-        $Sprite.flip_h = true
-        if not falling:
-            $Body.play("Run")
-    elif Input.is_action_pressed("right"):
-        # moveVector += Vector2(1, 0)
-        currentLateralSpeed = min(maxLateralSpeed, currentLateralSpeed + lateralAcceleration)
-        $Body.flip_h = false
-        $Sprite.flip_h = false
-        if not falling:
-            $Body.play("Run")
-    else:
-        if falling:
-            currentLateralSpeed *= 0.99
-            $Body.play("Fall")
-        else:
-            currentLateralSpeed *= 0.9
-            $Body.play("Idle")
-    if falling:
-        verticalSpeed += downGravity
-    else:
-        verticalSpeed = 0
-    # moveVector.x *= lateralSpeed
-    moveVector = Vector2(currentLateralSpeed, verticalSpeed*verticalSpeedConstant)
-    translate(moveVector)
-    if falling:
-        timeJumped += delta
-        if self.position.y > get_viewport().size.y - $Sprite.texture.get_height()*$Sprite.scale.y:
-            self.position = Vector2(self.position.x, get_viewport().size.y - $Sprite.texture.get_height()*$Sprite.scale.y)
-            verticalSpeed = 0
-            falling = false
-        if self.position.y <= 0:
-            self.position = Vector2(self.position.x, 0)
-            verticalSpeed = 0
-            $Body.play("Idle")
-
-func jump():
-    if timeJumped > jumpReload:
-        $Body.play("Jump")
-        verticalSpeed -= jumpSpeed
-        verticalSpeed = max(-maxVerticalSpeed, verticalSpeed)
-        print("vertical speed: " + str(verticalSpeed))
-        falling = true
-        timeJumped = 0
-
-func shoot(direction):
-    # create a new bullet
-    # var bullet = Bullet.new(position, direction, 2, 3, 1, "linear", 0)
-    # get_parent().add_child(bullet)
-    #BulletAttack(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
-
-    BulletAttack.shoot(get_parent(), position, direction, "Linear", 5, 45, "Equidistant", 1, 10, 0, 0.5)
-
-
-func _on_RigidBody2D_body_entered(body:Node):
-    print(body)
-    # pass # Replace with function body.
-
-
-func _on_RigidBody2D_mouse_entered():
-    print("endeter mouse")
-    pass # Replace with function body.
-
-
-func _on_Area2D_body_entered(body:Node):
-    print(body)
-    # pass # Replace with function body.
-
-func _on_Area2D_area_entered(area:Area2D):
-    # print(area.get_parent().damage)
-    print(area.get_parent())
-    pass # Replace with function body.
-
-
-func _on_Body_animation_finished():
-    # if animation is jump
-    if $Body.animation == "Jump":
-        if falling:
-            $Body.animation = "Fall"
-        else:
-            $Body.animation = "Idle"
-    pass # Replace with function body.
+        var direction = (player_.get_viewport().get_mouse_position() ) - self.position
+        direction = direction.normalized()
+        BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet, self.bulletSpeed, self.pierce, self.bulletLifetime)
