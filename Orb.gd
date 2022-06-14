@@ -15,9 +15,12 @@ var downAcceleration = 0.05
 var stepRotation = 1*2*3.14/180
 var shootRotationMultiplier = -15
 var downGravity = 0.05
-var lateralSpeed = 2
+var maxLateralSpeed = 3
+var currentLateralSpeed = 0
+var lateralAcceleration = 0.1
 var verticalSpeedConstant = 2
-var jumpSpeed = 2
+var maxVerticalSpeed = 4
+var jumpSpeed = 3
 
 
 # Called when the node enters the scene tree for the first time.
@@ -47,34 +50,59 @@ func _process(delta):
         # get_parent().add_child(enemy)
         
     var moveVector = Vector2()
+    if Input.is_action_pressed("ui_left"):
+        if timeSinceShot > reloadTime:
+            timeSinceShot = 0
+            shoot(Vector2(-1, 0))
+            $Sprite.rotate(shootRotationMultiplier*stepRotation)
+    elif Input.is_action_pressed("ui_right"):
+        if timeSinceShot > reloadTime:
+            timeSinceShot = 0
+            shoot(Vector2(1, 0))
+            $Sprite.rotate(shootRotationMultiplier*stepRotation)
+    elif Input.is_action_pressed("ui_up"):
+        if timeSinceShot > reloadTime:
+            timeSinceShot = 0
+            shoot(Vector2(0, -1))
+            $Sprite.rotate(shootRotationMultiplier*stepRotation)
+    elif Input.is_action_pressed("ui_down"):
+        if timeSinceShot > reloadTime:
+            timeSinceShot = 0
+            shoot(Vector2(0, 1))
+            $Sprite.rotate(shootRotationMultiplier*stepRotation)
+
     if Input.is_action_pressed("up"):
         jump()
     if Input.is_action_pressed("down"):
         verticalSpeed = max(0, verticalSpeed)
         verticalSpeed += downAcceleration
     if Input.is_action_pressed("left"):
-        moveVector += Vector2(-1, 0)
+        # moveVector += Vector2(-1, 0)
+        currentLateralSpeed = max(-maxLateralSpeed, currentLateralSpeed - lateralAcceleration)
         $Body.flip_h = true
         $Sprite.flip_h = true
         if not falling:
             $Body.play("Run")
     elif Input.is_action_pressed("right"):
-        moveVector += Vector2(1, 0)
+        # moveVector += Vector2(1, 0)
+        currentLateralSpeed = min(maxLateralSpeed, currentLateralSpeed + lateralAcceleration)
         $Body.flip_h = false
         $Sprite.flip_h = false
         if not falling:
             $Body.play("Run")
     else:
         if falling:
+            currentLateralSpeed *= 0.99
             $Body.play("Fall")
         else:
+            currentLateralSpeed *= 0.9
             $Body.play("Idle")
     if falling:
         verticalSpeed += downGravity
     else:
         verticalSpeed = 0
-    moveVector.x *= lateralSpeed
-    moveVector += Vector2(0, verticalSpeed*verticalSpeedConstant)
+    # moveVector.x *= lateralSpeed
+    moveVector = Vector2(currentLateralSpeed, verticalSpeed*verticalSpeedConstant)
     translate(moveVector)
     if falling:
         timeJumped += delta
@@ -90,7 +118,9 @@ func _process(delta):
 func jump():
     if timeJumped > jumpReload:
         $Body.play("Jump")
-        verticalSpeed = -jumpSpeed
+        verticalSpeed -= jumpSpeed
+        verticalSpeed = max(-maxVerticalSpeed, verticalSpeed)
+        print("vertical speed: " + str(verticalSpeed))
         falling = true
         timeJumped = 0
 
