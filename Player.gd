@@ -21,6 +21,8 @@ var lateralAcceleration = 0.1
 var verticalSpeedConstant = 2
 var maxVerticalSpeed = 4
 var jumpSpeed = 3
+var groundPosition = 600
+var ceilingPosition = 120
 onready var orb = Orb.new("Fan", get_parent(), self)
 
 
@@ -104,16 +106,15 @@ func _process(delta):
         verticalSpeed = 0
     # moveVector.x *= lateralSpeed
     moveVector = Vector2(currentLateralSpeed, verticalSpeed*verticalSpeedConstant)
-    $Body.play("Idle")
     translate(moveVector)
-    timeJumped += delta
     if falling:
-        if self.position.y > get_viewport().size.y - $Sprite.texture.get_height()*$Sprite.scale.y:
-            self.position = Vector2(self.position.x, get_viewport().size.y - $Sprite.texture.get_height()*$Sprite.scale.y)
+        timeJumped += delta
+        if self.position.y > groundPosition - $Sprite.texture.get_height()*$Sprite.scale.y:
+            self.position = Vector2(self.position.x, groundPosition - $Sprite.texture.get_height()*$Sprite.scale.y)
             verticalSpeed = 0
             falling = false
-        if self.position.y <= 0:
-            self.position = Vector2(self.position.x, 0)
+        if self.position.y <= ceilingPosition:
+            self.position = Vector2(self.position.x, ceilingPosition)
             verticalSpeed = 0
             $Body.play("Idle")
 
