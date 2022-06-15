@@ -26,7 +26,7 @@ var groundPosition = 605
 var ceilingPosition = 120
 var score = 0
 var maxScore = 0
-onready var orb = Orb.new("Water Gun", get_parent(), self)
+onready var orb = Orb.new("Crossbow", get_parent(), self)
 
 
 # Called when the node enters the scene tree for the first time.

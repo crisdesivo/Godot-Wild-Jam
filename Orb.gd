@@ -52,6 +52,21 @@ var orbs = {
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15
+    },
+    "Crossbow": {
+        "bulletMovement": "Linear",
+        "bulletsPerShot": 1,
+        "spreadAngle": 0,
+        "spreadDistribution": "Equidistant",
+        "damagePerBullet": 10,
+        "bulletSpeed": 12,
+        "pierce": 5,
+        "bulletLifetime": 0.5,
+        "reloadTime": 2,
+        "bulletTexture": load("res://Assets/orb1.png"),
+        "numberOfJumps": -1,
+        "jumpReload": 0.5,
+        "shootRotationMultiplier": -15
     }
 
 }
@@ -97,7 +112,7 @@ func shoot():
         self.timeSinceShot = 0
         # static func shoot(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
         
-        var direction = (player_.get_viewport().get_mouse_position() ) - self.position
+        var direction = (player_.get_viewport().get_mouse_position() ) - player_.position
         direction = direction.normalized()
         BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet, self.bulletSpeed, self.pierce, self.bulletLifetime)
         rotate(shootRotationMultiplier*stepRotation)
@@ -110,7 +125,11 @@ func shootDirection(direction: Vector2):
 func _process(delta):
     rotate(stepRotation)
     timeSinceShot += delta
-
+    if timeSinceShot < reloadTime:
+        player_.get_node("ReloadBar").visible = true
+        player_.get_node("ReloadBar/Progress").rect_size.x = min(40, 40*timeSinceShot / reloadTime)
+    else:
+        player_.get_node("ReloadBar").visible = false
 func on_area_entered(area: Area2D):
     print(area.get_parent())
     # restart scene
