@@ -83,7 +83,7 @@ __meta__ = {
 [node name="Background" type="AnimatedSprite" parent="."]
 scale = Vector2( 3.19095, 3.21429 )
 frames = SubResource( 2 )
-frame = 4
+frame = 5
 playing = true
 centered = false
 script = ExtResource( 17 )
@@ -98,20 +98,21 @@ script = ExtResource( 18 )
 position = Vector2( 635, 431 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 4 )
-frame = 1
+frame = 4
 playing = true
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
 position = Vector2( 1012, 333 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 4 )
+frame = 3
 playing = true
 
 [node name="AnimatedSprite3" type="AnimatedSprite" parent="."]
 position = Vector2( 261, 327 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 4 )
-frame = 4
+frame = 2
 playing = true
 
 [node name="Pillars" type="Sprite" parent="."]
@@ -128,7 +129,6 @@ script = ExtResource( 2 )
 position = Vector2( -2, 19 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="Sprite" type="Sprite" parent="Player"]
@@ -159,11 +159,11 @@ stream = ExtResource( 21 )
 [node name="Score" type="Label" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -22.0
+margin_left = -170.0
 margin_bottom = 720.0
 custom_fonts/font = SubResource( 3 )
 text = "0"
-align = 1
+align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

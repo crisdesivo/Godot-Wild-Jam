@@ -14,6 +14,7 @@ var width: int
 var movementType: String
 var pierce: int
 var pierced = -1
+var gravityMagnitude = 20
 
 
 func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: float, damage_: float, movementType_: String, pierce_: int):
@@ -50,9 +51,9 @@ func _ready():
 func _process(delta):
     timeAlive += delta
     if movementType == 'Gravity':
-        velocity.y += delta * -9.8 * 0.01
+        velocity.y += delta * gravityMagnitude
     if movementType == 'Inverse gravity':
-        velocity.y += delta * +9.8 * 0.01
+        velocity.y += delta * -gravityMagnitude
     if movementType == 'Back gravity':
         # add gravity in the opposite direction of the bullet
         velocity += delta * -9.8 * 0.01 * direction

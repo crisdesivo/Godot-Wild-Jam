@@ -37,6 +37,21 @@ var orbs = {
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15
+    },
+    "Water Gun": {
+        "bulletMovement": "Gravity",
+        "bulletsPerShot": 1,
+        "spreadAngle": 25,
+        "spreadDistribution": "Random",
+        "damagePerBullet": 1,
+        "bulletSpeed": 7,
+        "pierce": 0,
+        "bulletLifetime": 1.5,
+        "reloadTime": 0.1,
+        "bulletTexture": load("res://Assets/orb1.png"),
+        "numberOfJumps": -1,
+        "jumpReload": 0.5,
+        "shootRotationMultiplier": -15
     }
 
 }
