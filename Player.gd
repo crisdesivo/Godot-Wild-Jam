@@ -35,6 +35,8 @@ func _ready():
     # enemy.position = Vector2(100, 100)
     # get_parent().add_child(enemy)
     # print(enemy)
+    maxScore = Variables.maxScore
+    get_parent().get_node("MaxScore").text = "Max Score: " + str(Variables.maxScore)
     pass
 
 
@@ -159,6 +161,7 @@ func addScore(points):
     if score > maxScore:
         maxScore = score
         get_parent().get_node("MaxScore").text = "Max Score: "+str(maxScore)
+        Variables.maxScore = maxScore
 
 func _on_RigidBody2D_body_entered(body:Node):
     print(body)

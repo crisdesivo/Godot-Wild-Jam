@@ -66,6 +66,10 @@ config/name="Godot Wild Jam"
 run/main_scene="res://Splash.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Variables="*res://variables.gd"
+
 [display]
 
 window/size/width=1270
