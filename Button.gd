@@ -18,3 +18,4 @@ func _ready():
 
 func _on_Button_pressed():
     $AudioStreamPlayer.play()
+    get_tree().change_scene("res://Orb.tscn")

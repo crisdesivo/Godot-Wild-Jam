@@ -9,6 +9,7 @@ var speed: float
 var flies: bool
 var lastHit = 0.0
 var lastBoost = 0.0
+var alive = true
 # var name = "enemy"
 
 func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float):
@@ -62,8 +63,10 @@ func _process(delta):
 
 func takeDamage(damage):
     self.currentHP -= damage
-    if self.currentHP <= 0:
+    if self.currentHP <= 0 and alive:
+        alive = false
         queue_free()
+        player.addScore(1)
     else:
         self_modulate = Color(1, 0, 0, 1)
         lastHit = 0.0

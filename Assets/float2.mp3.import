@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/float2.mp3-c69b09821b514276fa3a54e4cf278e0c.mp3str"
+
+[deps]
+
+source_file="res://Assets/float2.mp3"
+dest_files=[ "res://.import/float2.mp3-c69b09821b514276fa3a54e4cf278e0c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
