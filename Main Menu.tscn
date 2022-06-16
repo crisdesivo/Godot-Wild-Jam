@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Oswald/static/Oswald-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://HTTPRequest.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Assets/thinking_song.mp3" type="AudioStream" id=4]
 [ext_resource path="res://Assets/click1.wav" type="AudioStream" id=5]
 [ext_resource path="res://Button.gd" type="Script" id=6]
+[ext_resource path="res://input_menu/InputMenu.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 120
@@ -138,6 +139,17 @@ audio_bus_name = "Other"
 stream = ExtResource( 4 )
 autoplay = true
 bus = "Music"
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0784314, 0.133333, 0.25098, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputMenu" parent="ColorRect2" instance=ExtResource( 7 )]
 
 [connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Button" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Button" method="_on_Button_pressed"]
 [connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback/Send feedback" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback/Send feedback/HTTPRequest" method="_on_Send_feedback_pressed"]

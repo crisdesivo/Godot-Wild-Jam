@@ -5,16 +5,14 @@ extends Node2D
 # var a = 2
 # var b = "text"
 var rng = RandomNumberGenerator.new()
-var reloadTime = 0.5
-var timeSinceShot = reloadTime
 var bulletTexture = load("res://Assets/orb1.png")
 var verticalSpeed = 0
 var falling = true
 var jumpReload = 0.5
 var timeJumped = 0
 var downAcceleration = 0.05
-var stepRotation = 1*2*3.14/180
-var shootRotationMultiplier = -15
+# var stepRotation = 1*2*3.14/180
+# var shootRotationMultiplier = -15
 var downGravity = 0.05
 var maxLateralSpeed = 3
 var currentLateralSpeed = 0
@@ -22,81 +20,72 @@ var lateralAcceleration = 0.1
 var verticalSpeedConstant = 2
 var maxVerticalSpeed = 4
 var jumpSpeed = 3
-var groundPosition = 605
+var groundPosition = 563
 var ceilingPosition = 120
 var score = 0
 var maxScore = 0
-onready var orb = Orb.new("Crossbow", get_parent(), self)
+onready var orbs = [Orb.new("Crossbow", get_parent(), self), Orb.new("Water Gun", get_parent(), self), Orb.new("Fan", get_parent(), self)]
+var selectedOrb = 1
+var changeOrbDelay = 0.1
+var changeOrbTime = changeOrbDelay + 1
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-    # var enemy = Enemy.new(10, 1, false, bulletTexture)
-    # enemy.position = Vector2(100, 100)
-    # get_parent().add_child(enemy)
-    # print(enemy)
     maxScore = Variables.maxScore
-    get_parent().get_node("MaxScore").text = "Max Score: " + str(Variables.maxScore)
+    get_parent().get_node("GUI/MaxScore").text = "Max Score: " + str(Variables.maxScore)
+    orbs[selectedOrb].select()
     pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    # timeSinceShot += delta
-    # rotate the node 1 degree (in redians)
-    # $Sprite.rotate(stepRotation)
-    # if space bar is pressed rotate backwards
-    if Input.is_action_pressed("click"):
-        orb.shoot()
-        # if timeSinceShot > reloadTime:
-        #     timeSinceShot = 0
-        #     var direction = (get_viewport().get_mouse_position() ) - self.position
-        #     direction = direction.normalized()
-        #     self.shoot(direction)
-        #     $Sprite.rotate(shootRotationMultiplier*stepRotation)
-        # var enemy = Enemy.new(10, 1, false, bulletTexture)
-        # enemy.position = get_viewport().get_mouse_position()
-        # get_parent().add_child(enemy)
-        
-    var moveVector = Vector2()
-    if Input.is_action_pressed("ui_left"):
-        # if timeSinceShot > reloadTime:
-        #     timeSinceShot = 0
-        orb.shootDirection(Vector2(-1, 0))
-            # $Sprite.rotate(shootRotationMultiplier*stepRotation)
-    elif Input.is_action_pressed("ui_right"):
-        # if timeSinceShot > reloadTime:
-        #     timeSinceShot = 0
-        orb.shootDirection(Vector2(1, 0))
-            # shoot(Vector2(1, 0))
-            # $Sprite.rotate(shootRotationMultiplier*stepRotation)
-    elif Input.is_action_pressed("ui_up"):
-        # if timeSinceShot > reloadTime:
-        #     timeSinceShot = 0
-        orb.shootDirection(Vector2(0, -1))
-            # shoot(Vector2(0, -1))
-            # $Sprite.rotate(shootRotationMultiplier*stepRotation)
-    elif Input.is_action_pressed("ui_down"):
-        # if timeSinceShot > reloadTime:
-        #     timeSinceShot = 0
-        orb.shootDirection(Vector2(0, 1))
-        #     shoot(Vector2(0, 1))
-        #     $Sprite.rotate(shootRotationMultiplier*stepRotation)
+    changeOrbTime += delta
+    timeJumped += delta
 
+    # Orb change inputs
+    if Input.is_action_pressed("Change Left"):
+        if changeOrbTime > changeOrbDelay:
+            var index = (selectedOrb - 1) % len(orbs)
+            changeOrb(index)
+            changeOrbTime = 0
+    if Input.is_action_pressed("Change Right"):
+        if changeOrbTime > changeOrbDelay:
+            var index = (selectedOrb + 1) % len(orbs)
+            changeOrb(index)
+            changeOrbTime = 0
+
+    # Shooting inputs
+    if Input.is_action_pressed("click"):
+        orbs[selectedOrb].shoot()
+    else:
+        var shootDirection = Vector2(0, 0)
+        if Input.is_action_pressed("ui_left"):
+            shootDirection.x -= 1
+            # orbs[selectedOrb].shootDirection(Vector2(-1, 0))
+        if Input.is_action_pressed("ui_right"):
+            shootDirection.x += 1
+            # orbs[selectedOrb].shootDirection(Vector2(1, 0))
+        if Input.is_action_pressed("ui_up"):
+            shootDirection.y -= 1
+            # orbs[selectedOrb].shootDirection(Vector2(0, -1))
+        if Input.is_action_pressed("ui_down"):
+            shootDirection.y += 1
+            # orbs[selectedOrb].shootDirection(Vector2(0, 1))
+        if shootDirection.length_squared() > 0:
+            orbs[selectedOrb].shootDirection(shootDirection.normalized())
+
+    # Movement inputs
     if Input.is_action_pressed("up"):
         jump()
     if Input.is_action_pressed("down"):
         verticalSpeed = max(0, verticalSpeed)
         verticalSpeed += downAcceleration
     if Input.is_action_pressed("left"):
-        # moveVector += Vector2(-1, 0)
         currentLateralSpeed = max(-maxLateralSpeed, currentLateralSpeed - lateralAcceleration)
         $Body.flip_h = true
         $Sprite.flip_h = true
         if not falling:
             $Body.play("Run")
     elif Input.is_action_pressed("right"):
-        # moveVector += Vector2(1, 0)
         currentLateralSpeed = min(maxLateralSpeed, currentLateralSpeed + lateralAcceleration)
         $Body.flip_h = false
         $Sprite.flip_h = false
@@ -109,23 +98,26 @@ func _process(delta):
         else:
             currentLateralSpeed *= 0.9
             $Body.play("Idle")
+
+    # Update velocity and position
     if falling:
         verticalSpeed += downGravity
     else:
         verticalSpeed = 0
-    # moveVector.x *= lateralSpeed
-    moveVector = Vector2(currentLateralSpeed, verticalSpeed*verticalSpeedConstant)
+
+    var moveVector = Vector2(currentLateralSpeed, verticalSpeed*verticalSpeedConstant)
     translate(moveVector)
-    timeJumped += delta
+
+    # Check for collisions
     if falling:
-        if self.position.y > groundPosition - $Sprite.texture.get_height()*$Sprite.scale.y:
-            self.position = Vector2(self.position.x, groundPosition - $Sprite.texture.get_height()*$Sprite.scale.y)
+        if self.position.y > groundPosition:
+            self.position = Vector2(self.position.x, groundPosition)
             verticalSpeed = 0
             falling = false
+            $Body.play("Idle")
         if self.position.y <= ceilingPosition:
             self.position = Vector2(self.position.x, ceilingPosition)
             verticalSpeed = 0
-            $Body.play("Idle")
 
 func jump():
     if timeJumped > jumpReload:
@@ -147,20 +139,20 @@ func jump():
         falling = true
         timeJumped = 0
 
-func shoot(direction):
-    # create a new bullet
-    # var bullet = Bullet.new(position, direction, 2, 3, 1, "linear", 0)
-    # get_parent().add_child(bullet)
-    #BulletAttack(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
+# func shoot(direction):
+#     # create a new bullet
+#     # var bullet = Bullet.new(position, direction, 2, 3, 1, "linear", 0)
+#     # get_parent().add_child(bullet)
+#     #BulletAttack(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
 
-    BulletAttack.shoot(get_parent(), position, direction, "Linear", 5, 45, "Equidistant", 1, 10, 0, 0.5)
+#     BulletAttack.shoot(get_parent(), position, direction, "Linear", 5, 45, "Equidistant", 1, 10, 0, 0.5)
 
 func addScore(points):
     self.score += points
-    get_parent().get_node("Score").text = str(self.score)
+    get_parent().get_node("GUI/Score").text = str(self.score)
     if score > maxScore:
         maxScore = score
-        get_parent().get_node("MaxScore").text = "Max Score: "+str(maxScore)
+        get_parent().get_node("GUI/MaxScore").text = "Max Score: "+str(maxScore)
         Variables.maxScore = maxScore
 
 func _on_RigidBody2D_body_entered(body:Node):
@@ -182,7 +174,6 @@ func _on_Area2D_area_entered(area:Area2D):
     print(area.get_parent())
     pass # Replace with function body.
 
-
 func _on_Body_animation_finished():
     # if animation is jump
     if $Body.animation == "Jump":
@@ -191,3 +182,8 @@ func _on_Body_animation_finished():
         else:
             $Body.animation = "Idle"
     pass # Replace with function body.
+
+func changeOrb(index: int):
+    orbs[selectedOrb].deselect()
+    selectedOrb = index
+    orbs[selectedOrb].select()

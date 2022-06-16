@@ -1,0 +1,124 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Oswald/static/Oswald-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/Orb_Base.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Cormorant_Garamond,Eczar,Gentium_Basic,Libre_Baskerville,Libre_Franklin,etc/Cormorant_Garamond/CormorantGaramond-Bold.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 50
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 38
+font_data = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect"]
+margin_right = 1270.0
+margin_bottom = 720.0
+color = Color( 0.0784314, 0.133333, 0.25098, 1 )
+
+[node name="OrbSelection" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OrbSelection"]
+margin_right = 870.0
+margin_bottom = 620.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="OrbSelection/VBoxContainer"]
+margin_right = 870.0
+margin_bottom = 75.0
+custom_fonts/font = SubResource( 1 )
+text = "Choose an orb"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Orbs" type="HBoxContainer" parent="OrbSelection/VBoxContainer"]
+margin_top = 85.0
+margin_right = 870.0
+margin_bottom = 185.0
+alignment = 1
+
+[node name="Orb1" type="Control" parent="OrbSelection/VBoxContainer/Orbs"]
+margin_left = 281.0
+margin_right = 381.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Sprite" type="Sprite" parent="OrbSelection/VBoxContainer/Orbs/Orb1"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Orb2" type="Control" parent="OrbSelection/VBoxContainer/Orbs"]
+margin_left = 385.0
+margin_right = 485.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Sprite" type="Sprite" parent="OrbSelection/VBoxContainer/Orbs/Orb2"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Orb3" type="Control" parent="OrbSelection/VBoxContainer/Orbs"]
+margin_left = 489.0
+margin_right = 589.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Sprite" type="Sprite" parent="OrbSelection/VBoxContainer/Orbs/Orb3"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="ColorRect" type="ColorRect" parent="OrbSelection/VBoxContainer"]
+margin_top = 195.0
+margin_right = 870.0
+margin_bottom = 395.0
+rect_min_size = Vector2( 0, 200 )
+color = Color( 0.00392157, 0.0156863, 0.14902, 1 )
+
+[node name="Name" type="Label" parent="OrbSelection/VBoxContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -148.0
+custom_fonts/font = SubResource( 2 )
+text = "Orb of water"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="OrbSelection/VBoxContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 52.0
+custom_fonts/font = SubResource( 2 )
+text = "Attacks with pressurized water"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="OrbSelection/VBoxContainer"]
+margin_top = 405.0
+margin_right = 870.0
+margin_bottom = 458.0
+custom_colors/font_color = Color( 1, 0.427451, 0.14902, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Select"

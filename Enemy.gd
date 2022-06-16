@@ -10,15 +10,19 @@ var flies: bool
 var lastHit = 0.0
 var lastBoost = 0.0
 var alive = true
+var rotate = false
+var flip = false
 # var name = "enemy"
 
-func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float):
+func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool):
     name = "enemy"
     add_to_group("enemies")
     self.maxHP = maxHP_
     self.currentHP = maxHP_
     self.speed = speed_
     self.flies = flies_
+    self.rotate = rotate_
+    self.flip = flip_
     # self.texture = texture
     var hitbox = Area2D.new()
     var collisionShape = CollisionShape2D.new()
@@ -51,10 +55,16 @@ func _process(delta):
     var playerPosition = player.get_global_position()
     var enemyPosition = self.get_global_position()
     var distance = (playerPosition - enemyPosition).normalized()
+    if flip:
+        if distance.x < 0:
+            flip_h = false
+        else:
+            flip_h = true
     # position += distance * speed * delta
     # print(distance)
     translate(distance * speed * 100 * delta)
-
+    if rotate:
+        rotation_degrees = 90 + atan2(distance.y, distance.x) * 180 / PI
     # position.x -= 0.5
     # position.y += 0.5
 
