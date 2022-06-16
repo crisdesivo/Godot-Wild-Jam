@@ -60,7 +60,6 @@ func _ready():
         wave["lastSpawning"] = wave["delay"]
         if not "speedBonus" in wave:
             wave["speedBonus"] = 0.0
-    enemyWaves = [] # TODO REMOVE
 
 func _process(delta):
     if len(enemyWaves) == 0:
