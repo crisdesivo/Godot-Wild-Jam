@@ -12,9 +12,11 @@ var lastBoost = 0.0
 var alive = true
 var rotate = false
 var flip = false
+var movementType: String
+var velocity: Vector2
 # var name = "enemy"
 
-func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool):
+func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool, movementType_: String):
     name = "enemy"
     add_to_group("enemies")
     self.maxHP = maxHP_
@@ -23,6 +25,7 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
     self.flies = flies_
     self.rotate = rotate_
     self.flip = flip_
+    self.movementType = movementType_
     # self.texture = texture
     var hitbox = Area2D.new()
     var collisionShape = CollisionShape2D.new()
@@ -37,6 +40,8 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
     scale = Vector2(scale_, scale_)
     # var sprite = Sprite.new()
     # add_child(sprite)
+    if movementType == "attracted":
+        velocity = Vector2(0, 0)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -55,16 +60,23 @@ func _process(delta):
     var playerPosition = player.get_global_position()
     var enemyPosition = self.get_global_position()
     var distance = (playerPosition - enemyPosition).normalized()
-    if flip:
-        if distance.x < 0:
-            flip_h = false
+    if movementType == "homing":
+        translate(distance * speed * 100 * delta)
+    elif movementType == "attracted":
+        self.velocity += distance * speed * delta * 2
+        var velocityMagnitude = self.velocity.length()
+        if velocityMagnitude > speed:
+            # self.velocity = speed * self.velocity/velocityMagnitude
+            translate(self.velocity * 100 * delta * speed / velocityMagnitude)
         else:
-            flip_h = true
-    # position += distance * speed * delta
-    # print(distance)
-    translate(distance * speed * 100 * delta)
+            translate(self.velocity * 100 * delta)
     if rotate:
         rotation_degrees = 90 + atan2(distance.y, distance.x) * 180 / PI
+        if flip:
+            if distance.x < 0:
+                flip_h = false
+            else:
+                flip_h = true
     # position.x -= 0.5
     # position.y += 0.5
 

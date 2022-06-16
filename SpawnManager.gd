@@ -15,7 +15,8 @@ var enemies = {
         "hp": 5,
         "scale": 2,
         "rotate": true,
-        "flip": false
+        "flip": false,
+        "movement": "attracted",
     },
     "ghostie": {
         "texture": ghostieAsset,
@@ -23,7 +24,8 @@ var enemies = {
         "hp": 3,
         "scale": 0.2,
         "rotate": false,
-        "flip": true
+        "flip": true,
+        "movement": "homing",
     }
 }
 
@@ -125,7 +127,7 @@ func _process(delta):
 #     add_child(beetle)
 
 func spawnFromWave(wave):
-    var enemy = Enemy.new(enemies[wave["enemy"]]["hp"], enemies[wave["enemy"]]["speed"]*(1.0+wave["speedBonus"]), true, enemies[wave["enemy"]]["texture"], enemies[wave["enemy"]]["scale"], enemies[wave["enemy"]]["rotate"], enemies[wave["enemy"]]["flip"])
+    var enemy = Enemy.new(enemies[wave["enemy"]]["hp"], enemies[wave["enemy"]]["speed"]*(1.0+wave["speedBonus"]), true, enemies[wave["enemy"]]["texture"], enemies[wave["enemy"]]["scale"], enemies[wave["enemy"]]["rotate"], enemies[wave["enemy"]]["flip"], enemies[wave["enemy"]]["movement"])
     var location = rng.randi_range(0, 3)
     if location == 0:
         enemy.position = Vector2(rng.randi_range(0, int(get_viewport_rect().size.x)), 0)
