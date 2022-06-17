@@ -17,8 +17,8 @@ var profile_alternate = {
 	"down": KEY_DOWN,
 	"left": KEY_LEFT,
 	"right": KEY_RIGHT,
-	"Change Left": KEY_Q,
-	"Change Right": KEY_E,
+	"Change Left": KEY_0,
+	"Change Right": KEY_PERIOD,
 	
 }
 var profile_normal = {
@@ -30,8 +30,8 @@ var profile_normal = {
 	"down": KEY_S,
 	"left": KEY_A,
 	"right": KEY_D,
-	"Change Left": KEY_0,
-	"Change Right": KEY_PERIOD,
+	"Change Left": KEY_Q,
+	"Change Right": KEY_E,
 }
 var profile_custom = profile_normal
 
