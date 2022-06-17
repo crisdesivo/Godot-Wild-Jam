@@ -4,11 +4,11 @@ signal profile_changed(new_profile, is_customizable)
 
 var current_profile_id = 0
 var profiles = {
-	0: 'profile_normal',
-	1: 'profile_alternate',
-	2: 'profile_custom',
+	0: 'profile_custom',
+	1: 'profile_normal',
+	2: 'profile_alternate',
 }
-var profile_normal = {
+var profile_alternate = {
 	'ui_up': KEY_W,
 	'ui_down': KEY_S,
 	'ui_left': KEY_A,
@@ -21,7 +21,7 @@ var profile_normal = {
 	"Change Right": KEY_E,
 	
 }
-var profile_alternate = {
+var profile_normal = {
 	'ui_up': KEY_UP,
 	'ui_down': KEY_DOWN,
 	'ui_left': KEY_LEFT,
@@ -63,3 +63,18 @@ func get_selected_profile():
 
 func _on_ProfilesMenu_item_selected(ID):
 	change_profile(ID)
+
+func saveToDisk():
+	var profile = get_selected_profile()
+	var file = File.new()
+	file.open("user://key_mapping.save", File.WRITE)
+	file.store_var(profile, true)
+
+func loadFromDisk():
+	var file = File.new()
+	if not file.file_exists("user://key_mapping.save"):
+		return # Error! We don't have a save to load.
+	file.open("user://key_mapping.save", File.READ)
+	var profile = file.get_var(true)
+	profile_custom = profile
+	change_profile(0)

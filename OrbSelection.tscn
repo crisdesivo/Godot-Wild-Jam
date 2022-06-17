@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Oswald/static/Oswald-Bold.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Assets/Orb_Base.png" type="Texture" id=2]
+[ext_resource path="res://OrbSelectionContainer.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Cormorant_Garamond,Eczar,Gentium_Basic,Libre_Baskerville,Libre_Franklin,etc/Cormorant_Garamond/CormorantGaramond-Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://OrbSelection.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 50
@@ -16,10 +17,14 @@ font_data = ExtResource( 3 )
 size = 38
 font_data = ExtResource( 3 )
 
-[node name="ColorRect" type="ColorRect"]
+[node name="Selector" type="ColorRect"]
 margin_right = 1270.0
 margin_bottom = 720.0
 color = Color( 0.0784314, 0.133333, 0.25098, 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="OrbSelection" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -27,6 +32,7 @@ anchor_bottom = 1.0
 margin_left = 200.0
 margin_top = 100.0
 margin_right = -200.0
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -51,38 +57,23 @@ margin_right = 870.0
 margin_bottom = 185.0
 alignment = 1
 
-[node name="Orb1" type="Control" parent="OrbSelection/VBoxContainer/Orbs"]
+[node name="Orb1" type="Button" parent="OrbSelection/VBoxContainer/Orbs"]
 margin_left = 281.0
 margin_right = 381.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
-[node name="Sprite" type="Sprite" parent="OrbSelection/VBoxContainer/Orbs/Orb1"]
-scale = Vector2( 3, 3 )
-texture = ExtResource( 2 )
-centered = false
-
-[node name="Orb2" type="Control" parent="OrbSelection/VBoxContainer/Orbs"]
+[node name="Orb2" type="Button" parent="OrbSelection/VBoxContainer/Orbs"]
 margin_left = 385.0
 margin_right = 485.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
-[node name="Sprite" type="Sprite" parent="OrbSelection/VBoxContainer/Orbs/Orb2"]
-scale = Vector2( 3, 3 )
-texture = ExtResource( 2 )
-centered = false
-
-[node name="Orb3" type="Control" parent="OrbSelection/VBoxContainer/Orbs"]
+[node name="Orb3" type="Button" parent="OrbSelection/VBoxContainer/Orbs"]
 margin_left = 489.0
 margin_right = 589.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
-
-[node name="Sprite" type="Sprite" parent="OrbSelection/VBoxContainer/Orbs/Orb3"]
-scale = Vector2( 3, 3 )
-texture = ExtResource( 2 )
-centered = false
 
 [node name="ColorRect" type="ColorRect" parent="OrbSelection/VBoxContainer"]
 margin_top = 195.0
@@ -122,3 +113,33 @@ margin_bottom = 458.0
 custom_colors/font_color = Color( 1, 0.427451, 0.14902, 1 )
 custom_fonts/font = SubResource( 3 )
 text = "Select"
+
+[node name="Orbs2" type="HBoxContainer" parent="OrbSelection/VBoxContainer"]
+margin_top = 468.0
+margin_right = 870.0
+margin_bottom = 568.0
+alignment = 1
+
+[node name="Orb1" type="Control" parent="OrbSelection/VBoxContainer/Orbs2"]
+margin_left = 281.0
+margin_right = 381.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Orb2" type="Control" parent="OrbSelection/VBoxContainer/Orbs2"]
+margin_left = 385.0
+margin_right = 485.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Orb3" type="Control" parent="OrbSelection/VBoxContainer/Orbs2"]
+margin_left = 489.0
+margin_right = 589.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[connection signal="orbSelected" from="OrbSelection" to="." method="_on_OrbSelection_orbSelected"]
+[connection signal="pressed" from="OrbSelection/VBoxContainer/Orbs/Orb1" to="OrbSelection" method="_on_Orb1_pressed"]
+[connection signal="pressed" from="OrbSelection/VBoxContainer/Orbs/Orb2" to="OrbSelection" method="_on_Orb2_pressed"]
+[connection signal="pressed" from="OrbSelection/VBoxContainer/Orbs/Orb3" to="OrbSelection" method="_on_Orb3_pressed"]
+[connection signal="pressed" from="OrbSelection/VBoxContainer/Button" to="OrbSelection" method="_on_Button_pressed"]

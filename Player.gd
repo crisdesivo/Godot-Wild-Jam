@@ -5,12 +5,22 @@ extends Node2D
 # var a = 2
 # var b = "text"
 var rng = RandomNumberGenerator.new()
-var bulletTexture = load("res://Assets/orb1.png")
+
+# var bulletTexture = load("res://Assets/orb1.png")
 var verticalSpeed = 0
 var falling = true
 var jumpReload = 0.5
 var timeJumped = 0
 var downAcceleration = 0.05
+
+var fireRateBonus = 0.0
+var damageBonus = 0.0
+var speedBonus = 0.0
+var pierceBonus = 0.0
+var spreadBonus = 0.0
+
+var fireBonus = 0
+var iceBonus = 0
 # var stepRotation = 1*2*3.14/180
 # var shootRotationMultiplier = -15
 var downGravity = 0.05
@@ -24,14 +34,18 @@ var groundPosition = 563
 var ceilingPosition = 120
 var score = 0
 var maxScore = 0
-onready var orbs = [Orb.new("Crossbow", get_parent(), self), Orb.new("Water Gun", get_parent(), self), Orb.new("Fan", get_parent(), self)]
-var selectedOrb = 1
+# onready var orbs = [Orb.new("Crossbow", get_parent(), self), Orb.new("Water Gun", get_parent(), self), Orb.new("Fan", get_parent(), self)]
+var orbs = []
+var selectedOrb = 0
 var changeOrbDelay = 0.1
 var changeOrbTime = changeOrbDelay + 1
 
 func _ready():
     maxScore = Variables.maxScore
     get_parent().get_node("GUI/MaxScore").text = "Max Score: " + str(Variables.maxScore)
+    for orbName in Variables.initialOrbs:
+        orbs.append(Orb.new(orbName, get_parent(), self))
+        orbs[0].equip()
     orbs[selectedOrb].select()
     pass
 

@@ -1,8 +1,9 @@
-extends Control
+extends ColorRect
 
 onready var _action_list = get_node("Column/ScrollContainer/ActionList")
 
 func _ready():
+	$InputMapper.loadFromDisk()
 	$InputMapper.connect('profile_changed', self, 'rebuild')
 	$Column/ProfilesMenu.initialize($InputMapper)
 	$InputMapper.change_profile($Column/ProfilesMenu.selected)
@@ -31,4 +32,10 @@ func _on_InputLine_change_button_pressed(action_name, line):
 # 		get_tree().change_scene("res://demo/Game.tscn")
 
 func _on_PlayButton_pressed():
-	get_tree().change_scene("res://Orb.tscn")
+	$InputMapper.saveToDisk()
+	hide()
+	# get_tree().change_scene("res://Orb.tscn")
+
+
+func _on_Button2_pressed():
+	show()

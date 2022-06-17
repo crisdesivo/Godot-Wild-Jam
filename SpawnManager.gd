@@ -58,6 +58,8 @@ var enemyWaves = [
 ]
 
 func _ready():
+    rng.randomize()
+    randomize()
     for wave in enemyWaves:
         wave["lastSpawning"] = wave["delay"]
         if not "speedBonus" in wave:

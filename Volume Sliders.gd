@@ -1,4 +1,4 @@
-extends Button
+extends VBoxContainer
 
 
 # Declare member variables here. Examples:
@@ -16,6 +16,8 @@ func _ready():
 #    pass
 
 
-func _on_Button_pressed():
-    $AudioStreamPlayer.play()
-    get_tree().change_scene("res://OrbSelection.tscn")
+func _on_Label_pressed():
+    if visible:
+        hide()
+    else:
+        show()

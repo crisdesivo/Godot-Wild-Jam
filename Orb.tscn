@@ -53,6 +53,11 @@ animations = [ {
 "name": "Fall",
 "speed": 5.0
 }, {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
 "frames": [ ExtResource( 8 ), ExtResource( 9 ) ],
 "loop": true,
 "name": "Run",
@@ -61,11 +66,6 @@ animations = [ {
 "frames": [ ExtResource( 10 ), ExtResource( 10 ) ],
 "loop": true,
 "name": "Jump",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
-"loop": true,
-"name": "Idle",
 "speed": 5.0
 } ]
 
@@ -93,21 +93,21 @@ script = ExtResource( 17 )
 position = Vector2( 635, 431 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 4 )
-frame = 4
+frame = 3
 playing = true
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
 position = Vector2( 1012, 333 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 4 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="AnimatedSprite3" type="AnimatedSprite" parent="."]
 position = Vector2( 261, 327 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 4 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Pillars" type="Sprite" parent="."]
@@ -130,7 +130,6 @@ script = ExtResource( 2 )
 position = Vector2( 0, 20 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="Sprite" type="Sprite" parent="Player"]

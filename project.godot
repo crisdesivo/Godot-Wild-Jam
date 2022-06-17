@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Orb.gd"
 }, {
+"base": "Sprite",
+"class": "OrbSprite",
+"language": "GDScript",
+"path": "res://OrbSprite.gd"
+}, {
 "base": "Reference",
 "class": "Palette",
 "language": "GDScript",
@@ -56,6 +61,7 @@ _global_script_class_icons={
 "Enemy": "",
 "FlexGridContainer": "",
 "Orb": "",
+"OrbSprite": "",
 "Palette": "",
 "PaletteImporter": ""
 }
@@ -68,6 +74,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Data="*res://data.gd"
 Variables="*res://variables.gd"
 
 [display]

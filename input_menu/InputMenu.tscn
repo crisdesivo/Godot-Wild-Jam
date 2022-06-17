@@ -1,27 +1,26 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://input_menu/InputMenu.gd" type="Script" id=1]
 [ext_resource path="res://input_menu/input_mapper/InputMapper.tscn" type="PackedScene" id=2]
 [ext_resource path="res://input_menu/fonts/montserrat-extra-bold-48px.tres" type="DynamicFont" id=3]
 [ext_resource path="res://input_menu/fonts/montserrat-extra-bold-24px.tres" type="DynamicFont" id=4]
 [ext_resource path="res://input_menu/input_line/ActionList.gd" type="Script" id=5]
-[ext_resource path="res://input_menu/buttons/play.png" type="Texture" id=6]
-[ext_resource path="res://input_menu/buttons/play-pressed.png" type="Texture" id=7]
 [ext_resource path="res://input_menu/KeySelectMenu.gd" type="Script" id=8]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends OptionButton
 
 func initialize(input_mapper):
-	for profile_index in input_mapper.profiles:
-		var profile_name = input_mapper.profiles[profile_index].capitalize()
-		add_item(profile_name, profile_index)
-	self.connect(\"item_selected\", input_mapper, \"_on_ProfilesMenu_item_selected\")
+    for profile_index in input_mapper.profiles:
+        var profile_name = input_mapper.profiles[profile_index].capitalize()
+        add_item(profile_name, profile_index)
+    self.connect(\"item_selected\", input_mapper, \"_on_ProfilesMenu_item_selected\")
 "
 
-[node name="InputMenu" type="Control"]
+[node name="InputMenu" type="ColorRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+color = Color( 0.0784314, 0.133333, 0.25098, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -118,7 +117,7 @@ size_flags_vertical = 3
 custom_constants/separation = 15
 script = ExtResource( 5 )
 
-[node name="PlayButton" type="TextureButton" parent="Column"]
+[node name="PlayButton" type="Button" parent="Column"]
 margin_left = 521.0
 margin_top = 556.0
 margin_right = 649.0
@@ -126,10 +125,7 @@ margin_bottom = 620.0
 rect_min_size = Vector2( 128, 64 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 7 )
-expand = true
-stretch_mode = 4
+text = "Save and exit"
 
 [node name="KeySelectMenu" type="Panel" parent="."]
 visible = false

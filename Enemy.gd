@@ -6,6 +6,7 @@ var player
 var maxHP: float
 var currentHP: float
 var speed: float
+var cspeed: float
 var flies: bool
 var lastHit = 0.0
 var lastBoost = 0.0
@@ -35,7 +36,9 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
     self.add_child(hitbox)
     texture = texture_
     hitbox.collision_layer = 2
-    hitbox.collision_mask = 1
+    hitbox.set_collision_mask_bit(0b00000000000000000111, true)
+    hitbox.collision_mask = 2
+
     hitbox.connect("area_entered", self, "collision")
     scale = Vector2(scale_, scale_)
     # var sprite = Sprite.new()
@@ -57,11 +60,12 @@ func _process(delta):
     if lastBoost >= 1.01:
         speed *= 1.01
         lastBoost = 0
+    cspeed = min(speed, cspeed + 4*delta)
     var playerPosition = player.get_global_position()
     var enemyPosition = self.get_global_position()
     var distance = (playerPosition - enemyPosition).normalized()
     if movementType == "homing":
-        translate(distance * speed * 100 * delta)
+        translate(distance * cspeed * 100 * delta)
     elif movementType == "attracted":
         self.velocity += distance * speed * delta * 2
         var velocityMagnitude = self.velocity.length()
@@ -99,3 +103,11 @@ func collision(area):
     var bullet = area.get_parent()
     if bullet.is_in_group("bullets"):
         bullet.hit(self)
+    elif bullet.is_in_group("enemies"):
+        # cspeed = 0
+        var distance = bullet.position - self.position
+        var minDistance = bullet.texture.get_width()/2.0 + self.texture.get_width()/2.0
+        translate(-50*speed*distance/pow(distance.length()-minDistance, 2))
+        # print("collision between two enemiess")
+        # queue_free()
+        # bullet.queue_free()
