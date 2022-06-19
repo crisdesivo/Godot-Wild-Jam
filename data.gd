@@ -16,7 +16,7 @@ var orbs = {
         "pierce": 0,
         "bulletLifetime": 0.5,
         "reloadTime": 1,
-        "bulletTexture": "res://Assets/orb1.png",
+        "bulletTexture": "res://Assets/orb3.png",
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
@@ -56,7 +56,7 @@ var orbs = {
         "pierce": 5,
         "bulletLifetime": 0.5,
         "reloadTime": 2,
-        "bulletTexture": "res://Assets/orb1.png",
+        "bulletTexture": "res://Assets/orb2.png",
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
@@ -112,5 +112,25 @@ var orbs = {
         "color": Color(0, 0, 0.5),
         "texture": "res://Assets/Orb_Base.png",
         "description": "Summoning orb. Summon a cloud that rain over the enemies."
+    },
+    "Shockwave Orb": {
+        "passive": false,
+        "summon": false,
+        "bulletMovement": "Linear",
+        "bulletsPerShot": 40,
+        "spreadAngle": 360,
+        "spreadDistribution": "Equidistant",
+        "damagePerBullet": 0.2,
+        "bulletSpeed": 12,
+        "pierce": 2,
+        "bulletLifetime": 5,
+        "reloadTime": 2,
+        "bulletTexture": "res://Assets/orb_shockwave.png",
+        "numberOfJumps": -1,
+        "jumpReload": 0.5,
+        "shootRotationMultiplier": -15,
+        "color": Color(1, 1, 0.2),
+        "texture": "res://Assets/Orb_Base.png",
+        "description": "Shoots a wave of energy in all directions."
     }
 }

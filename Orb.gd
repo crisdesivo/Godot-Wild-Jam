@@ -52,6 +52,7 @@ onready var orbs = Data.orbs
 var orbName_ = ""
 var displayName = ""
 var level = 0
+var passive = false
 
 func _init(orbName: String, bulletsParent: Node, player: Node):
     visible = false
@@ -59,6 +60,7 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
     orbName_ = orbName
     summon = Data.orbs[orbName]["summon"]
     if Data.orbs[orbName]["passive"]:
+        passive = true
         if "fireRateBonus" in Data.orbs[orbName]:
             fireRateBonus = Data.orbs[orbName]["fireRateBonus"]
         if "damageBonus" in Data.orbs[orbName]:
@@ -130,14 +132,15 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
 
 # func shootBase()
 func upgrade():
-    # removeBonus()
-    # fireRateBonus += 0.05
+    if passive:
+        removeBonus()
+        fireRateBonus *= 1.1
+        damageBonus *= 1.1
+        addBonus()
     reloadTime /= 1.05
-    # damageBonus += 0.05
     damagePerBullet *= 1.05
     displayName += " +"
     level += 1
-    # addBonus()
 
 func shoot():
     if self.timeSinceShot >= finalReloadTime:

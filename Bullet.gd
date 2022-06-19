@@ -48,7 +48,7 @@ func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: fl
     var trail = CPUParticles2D.new()
     trail.emitting = true
     trail.amount = 8
-    trail.lifetime = 0.1
+    trail.lifetime = 0.1*7/speed_
     trail.local_coords = false
     trail.gravity = Vector2(0, 0)
     trail.texture = texture
