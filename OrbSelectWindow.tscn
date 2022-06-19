@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://OrbSelection.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Oswald/static/Oswald-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/button_pressed.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Oswald/static/Oswald-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Assets/button_normal.png" type="Texture" id=5]
+[ext_resource path="res://Assets/button_hover.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 50
@@ -14,6 +17,17 @@ font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 38
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=6]
+default_font = SubResource( 5 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 40
 font_data = ExtResource( 2 )
 
 [node name="OrbSelection" type="MarginContainer"]
@@ -28,12 +42,12 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 870.0
-margin_bottom = 620.0
+margin_right = 880.0
+margin_bottom = 635.0
 custom_constants/separation = 10
 
 [node name="Prompt" type="Label" parent="VBoxContainer"]
-margin_right = 870.0
+margin_right = 880.0
 margin_bottom = 75.0
 custom_fonts/font = SubResource( 1 )
 text = "Choose an orb"
@@ -43,31 +57,31 @@ uppercase = true
 
 [node name="Orbs" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 85.0
-margin_right = 870.0
+margin_right = 880.0
 margin_bottom = 185.0
 alignment = 1
 
 [node name="Orb1" type="Button" parent="VBoxContainer/Orbs"]
-margin_left = 281.0
-margin_right = 381.0
+margin_left = 286.0
+margin_right = 386.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
 [node name="Orb2" type="Button" parent="VBoxContainer/Orbs"]
-margin_left = 385.0
-margin_right = 485.0
+margin_left = 390.0
+margin_right = 490.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
 [node name="Orb3" type="Button" parent="VBoxContainer/Orbs"]
-margin_left = 489.0
-margin_right = 589.0
+margin_left = 494.0
+margin_right = 594.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
 margin_top = 195.0
-margin_right = 870.0
+margin_right = 880.0
 margin_bottom = 395.0
 rect_min_size = Vector2( 0, 200 )
 color = Color( 0.00392157, 0.0156863, 0.14902, 1 )
@@ -98,55 +112,105 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 405.0
-margin_right = 870.0
-margin_bottom = 468.0
+margin_right = 880.0
+margin_bottom = 525.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_right = 433.0
+[node name="Button_" type="Button" parent="VBoxContainer/HBoxContainer"]
+visible = false
+margin_right = 434.0
 margin_bottom = 63.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 1, 0.427451, 0.14902, 1 )
 custom_fonts/font = SubResource( 3 )
 text = "Select"
 
-[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 437.0
-margin_right = 870.0
+[node name="Button2_" type="Button" parent="VBoxContainer/HBoxContainer"]
+visible = false
+margin_right = 872.0
 margin_bottom = 63.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 1, 0.427451, 0.14902, 1 )
 custom_fonts/font = SubResource( 3 )
 text = "Cancel"
 
+[node name="Button" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_right = 880.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 0, 120 )
+size_flags_horizontal = 3
+theme = SubResource( 6 )
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 6 )
+expand = true
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_colors/font_color = Color( 0.890196, 0.670588, 0.00392157, 1 )
+custom_fonts/font = SubResource( 7 )
+text = "Select"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+visible = false
+margin_left = 442.0
+margin_right = 880.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+size_flags_horizontal = 3
+theme = SubResource( 6 )
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 6 )
+expand = true
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Button2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_colors/font_color = Color( 0.890196, 0.670588, 0.00392157, 1 )
+text = "Send Feedback"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Orbs2" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 478.0
-margin_right = 870.0
-margin_bottom = 578.0
+margin_top = 535.0
+margin_right = 880.0
+margin_bottom = 635.0
 alignment = 1
 
 [node name="Orb1" type="Control" parent="VBoxContainer/Orbs2"]
-margin_left = 281.0
-margin_right = 381.0
+margin_left = 286.0
+margin_right = 386.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
 [node name="Orb2" type="Control" parent="VBoxContainer/Orbs2"]
-margin_left = 385.0
-margin_right = 485.0
+margin_left = 390.0
+margin_right = 490.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
 [node name="Orb3" type="Control" parent="VBoxContainer/Orbs2"]
-margin_left = 489.0
-margin_right = 589.0
+margin_left = 494.0
+margin_right = 594.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
 [connection signal="pressed" from="VBoxContainer/Orbs/Orb1" to="." method="_on_Orb1_pressed"]
 [connection signal="pressed" from="VBoxContainer/Orbs/Orb2" to="." method="_on_Orb2_pressed"]
 [connection signal="pressed" from="VBoxContainer/Orbs/Orb3" to="." method="_on_Orb3_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button_" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button2_" to="." method="_on_Button2_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Button2" to="." method="_on_Button2_pressed"]

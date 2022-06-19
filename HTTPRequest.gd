@@ -17,9 +17,11 @@ func send_data(feedback):
     #Send data!!!!
     var result = self.request(my_full_url, headers_pool, false, http.METHOD_POST, my_data_ready)
     if result == 0:
-        print("Data sent!")
+        print("Comment sent, thank you for your feedback")
+        get_parent().get_parent().get_node("TextEdit").text = "Comment sent, thank you for your feedback"
     else:
         print("Error sending data!")
+        # get_parent().get_parent().get_node("TextEdit").text = "Error sending data!"
 
 
 func _on_Send_feedback_pressed():

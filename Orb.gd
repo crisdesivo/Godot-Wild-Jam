@@ -49,9 +49,11 @@ var equipped = false
 var stepRotation = 1*2*3.14/180
 
 onready var orbs = Data.orbs
+var displayName = ""
 
 func _init(orbName: String, bulletsParent: Node, player: Node):
     visible = false
+    displayName = orbName
     summon = Data.orbs[orbName]["summon"]
     if Data.orbs[orbName]["passive"]:
         if "fireRateBonus" in Data.orbs[orbName]:
@@ -124,6 +126,14 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
     add_child(hitbox)
 
 # func shootBase()
+func upgrade():
+    # removeBonus()
+    # fireRateBonus += 0.05
+    reloadTime /= 1.05
+    # damageBonus += 0.05
+    damagePerBullet *= 1.05
+    displayName += " +"
+    # addBonus()
 
 func shoot():
     if self.timeSinceShot >= finalReloadTime:
@@ -138,8 +148,9 @@ func shoot():
             var direction = (player_.get_viewport().get_mouse_position() ) - player_.position
             direction = direction.normalized()
             BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime, self.bulletTexture, false)
+            # get_parent().get_node("AttackSound").play()
             # rotate(shootRotationMultiplier*stepRotation)
-            rotate(-60*stepRotation)
+            # player_.rotate(-shootRotationMultiplier*stepRotation)
 
 func shootDirection(direction: Vector2):
     if self.timeSinceShot >= finalReloadTime:
@@ -150,18 +161,27 @@ func shootDirection(direction: Vector2):
             player_.get_parent().add_child(ally)
         else:
             BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime, self.bulletTexture, false)
-
-func deselect():
-    # player_.remove_child(self)
-    selected = false
-    visible = false
-    pass
+            # player_.get_parent().get_node("AttackSound").play()
+            # rotate(shootRotationMultiplier*stepRotation)
 
 func select():
     # player_.add_child(self)
     selected = true
     visible = true
+    duplicate.scale *= 1.2
+    duplicate.position += Vector2(-duplicate.texture.get_width()/(1.2*5), -duplicate.texture.get_height()/2.0)
+    # , -duplicate.texture.get_height())
     pass
+
+func deselect():
+    # player_.remove_child(self)
+    selected = false
+    visible = false
+    duplicate.scale = scale
+    duplicate.position = Vector2(0, 0)
+    # duplicate.position += Vector2(0, duplicate.texture.get_height())
+    pass
+
 
 func addBonus():
     player_.fireRateBonus += fireRateBonus
@@ -194,4 +214,6 @@ func on_area_entered(area: Area2D):
     # print(area.get_parent())
     # restart scene
     if area.get_parent().is_in_group("enemies") or area.get_parent().is_in_group("bullets"):
-        get_tree().reload_current_scene()
+        # get_tree().reload_current_scene()
+        Variables.lastScore = player_.score
+        get_tree().change_scene("res://DeathScreen.tscn")

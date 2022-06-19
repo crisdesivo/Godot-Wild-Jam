@@ -32,6 +32,8 @@ var maxVerticalSpeed = 4
 var jumpSpeed = 3
 var groundPosition = 563
 var ceilingPosition = 120
+var rightWallPosition = 1150
+var leftWallPosition = 135
 var score = 0
 var maxScore = 0
 # onready var orbs = [Orb.new("Crossbow", get_parent(), self), Orb.new("Water Gun", get_parent(), self), Orb.new("Fan", get_parent(), self)]
@@ -48,6 +50,11 @@ func _ready():
         orbs.append(Orb.new(orbName, get_parent(), self))
         orbs[0].equip()
     orbs[selectedOrb].select()
+    orbs[selectedOrb].upgrade()
+    orbs[selectedOrb].upgrade()
+    orbs[selectedOrb].upgrade()
+    orbs[selectedOrb].upgrade()
+    orbs[selectedOrb].upgrade()
     pass
 
 
@@ -57,12 +64,12 @@ func _process(delta):
     timeJumped += delta
 
     # Orb change inputs
-    if Input.is_action_pressed("Change Left"):
+    if Input.is_action_pressed("Change Orb Left"):
         if changeOrbTime > changeOrbDelay:
             var index = (selectedOrb - 1) % len(orbs)
             changeOrb(index)
             changeOrbTime = 0
-    if Input.is_action_pressed("Change Right"):
+    if Input.is_action_pressed("Change Orb Right"):
         if changeOrbTime > changeOrbDelay:
             var index = (selectedOrb + 1) % len(orbs)
             changeOrb(index)
@@ -73,34 +80,34 @@ func _process(delta):
         orbs[selectedOrb].shoot()
     else:
         var shootDirection = Vector2(0, 0)
-        if Input.is_action_pressed("ui_left"):
+        if Input.is_action_pressed("shoot_left"):
             shootDirection.x -= 1
             # orbs[selectedOrb].shootDirection(Vector2(-1, 0))
-        if Input.is_action_pressed("ui_right"):
+        if Input.is_action_pressed("shoot_right"):
             shootDirection.x += 1
             # orbs[selectedOrb].shootDirection(Vector2(1, 0))
-        if Input.is_action_pressed("ui_up"):
+        if Input.is_action_pressed("shoot_up"):
             shootDirection.y -= 1
             # orbs[selectedOrb].shootDirection(Vector2(0, -1))
-        if Input.is_action_pressed("ui_down"):
+        if Input.is_action_pressed("shoot_down"):
             shootDirection.y += 1
             # orbs[selectedOrb].shootDirection(Vector2(0, 1))
         if shootDirection.length_squared() > 0:
             orbs[selectedOrb].shootDirection(shootDirection.normalized())
 
     # Movement inputs
-    if Input.is_action_pressed("up"):
+    if Input.is_action_pressed("jump"):
         jump()
-    if Input.is_action_pressed("down"):
+    if Input.is_action_pressed("descend"):
         verticalSpeed = max(0, verticalSpeed)
         verticalSpeed += downAcceleration
-    if Input.is_action_pressed("left"):
+    if Input.is_action_pressed("move_left"):
         currentLateralSpeed = max(-maxLateralSpeed, currentLateralSpeed - lateralAcceleration)
         $Body.flip_h = true
         $Sprite.flip_h = true
         if not falling:
             $Body.play("Run")
-    elif Input.is_action_pressed("right"):
+    elif Input.is_action_pressed("move_right"):
         currentLateralSpeed = min(maxLateralSpeed, currentLateralSpeed + lateralAcceleration)
         $Body.flip_h = false
         $Sprite.flip_h = false
@@ -133,6 +140,13 @@ func _process(delta):
         if self.position.y <= ceilingPosition:
             self.position = Vector2(self.position.x, ceilingPosition)
             verticalSpeed = 0
+
+    if self.position.x > rightWallPosition:
+        self.position = Vector2(rightWallPosition, self.position.y)
+        currentLateralSpeed = 0
+    elif self.position.x < leftWallPosition:
+        self.position = Vector2(leftWallPosition, self.position.y)
+        currentLateralSpeed = 0
 
 func jump():
     if timeJumped > jumpReload:
@@ -169,6 +183,11 @@ func addScore(points):
         maxScore = score
         get_parent().get_node("GUI/MaxScore").text = "Max Score: "+str(maxScore)
         Variables.maxScore = maxScore
+        var file = File.new()
+        file.open("user://MaxScore.save", File.WRITE)
+        file.store_var(maxScore)
+        file.close()
+
 
 func _on_RigidBody2D_body_entered(body:Node):
     print(body)
@@ -200,7 +219,10 @@ func _on_Body_animation_finished():
 
 func changeOrb(index: int):
     $"../OrbSwitch".play()
-    yield(get_tree().create_timer(0.1, true), "timeout")
+    yield(get_tree().create_timer(0.1, false), "timeout")
     orbs[selectedOrb].deselect()
     selectedOrb = index
     orbs[selectedOrb].select()
+
+func getUpgrade():
+    get_tree().paused = true

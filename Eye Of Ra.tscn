@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Eye Of Ra.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Assets/Eye_of_Ra/sun_disk_body.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Orb_Base.png" type="Texture" id=6]
+
+[node name="Eye Of Ra" type="Sprite"]
+texture = ExtResource( 4 )
+
+[node name="Orb" type="Sprite" parent="."]
+texture = ExtResource( 6 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 1 )
+frame = 4
+playing = true

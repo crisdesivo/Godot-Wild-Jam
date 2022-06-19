@@ -55,9 +55,10 @@ func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: fl
     trail.self_modulate = Color(1, 1, 1, 0.2)
     add_child(trail)
     # trail.material = ParticlesMaterial.new()
-
-    # if enemy:
-    #     scale = Vector2(0.02, 0.02)
+    
+    if enemy:
+        scale = Vector2(0.5, 0.5)
+    trail.scale_amount = scale.x
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

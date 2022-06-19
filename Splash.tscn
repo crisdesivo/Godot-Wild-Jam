@@ -116,9 +116,9 @@ __meta__ = {
 
 [node name="TextEdit" type="Label" parent="CenterContainer"]
 modulate = Color( 1, 1, 1, 0.8 )
-margin_left = 187.0
+margin_left = 192.0
 margin_top = 310.0
-margin_right = 1082.0
+margin_right = 1087.0
 margin_bottom = 410.0
 rect_min_size = Vector2( 100, 100 )
 theme = SubResource( 3 )

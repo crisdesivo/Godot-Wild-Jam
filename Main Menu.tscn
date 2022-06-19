@@ -1,13 +1,15 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Oswald/static/Oswald-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://HTTPRequest.gd" type="Script" id=2]
 [ext_resource path="res://VolumeSlider.gd" type="Script" id=3]
-[ext_resource path="res://Assets/thinking_song.mp3" type="AudioStream" id=4]
-[ext_resource path="res://Assets/click1.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/button_normal.png" type="Texture" id=4]
+[ext_resource path="res://Assets/button_pressed.png" type="Texture" id=5]
 [ext_resource path="res://Button.gd" type="Script" id=6]
 [ext_resource path="res://input_menu/InputMenu.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Volume Sliders.gd" type="Script" id=8]
+[ext_resource path="res://Main Menu.gd" type="Script" id=9]
+[ext_resource path="res://Assets/button_hover.png" type="Texture" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 120
@@ -18,9 +20,17 @@ font_data = ExtResource( 1 )
 [sub_resource type="Theme" id=2]
 default_font = SubResource( 1 )
 
+[sub_resource type="DynamicFont" id=5]
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 5 )
+
 [node name="Main Menu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -28,7 +38,7 @@ __meta__ = {
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.0784314, 0.133333, 0.25098, 1 )
+color = Color( 0.0196078, 0, 0.258824, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -36,99 +46,151 @@ __meta__ = {
 [node name="CenterContainer" type="CenterContainer" parent="ColorRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer"]
-margin_left = 397.0
+margin_left = 161.0
 margin_top = 110.0
-margin_right = 873.0
+margin_right = 1118.0
 margin_bottom = 610.0
-rect_min_size = Vector2( 400, 500 )
+rect_min_size = Vector2( 0, 500 )
+size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer/MarginContainer"]
-margin_right = 476.0
+margin_right = 957.0
 margin_bottom = 500.0
+size_flags_vertical = 3
 
 [node name="Game Title" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer"]
-margin_right = 476.0
+margin_right = 957.0
 margin_bottom = 179.0
 theme = SubResource( 2 )
-custom_colors/font_color = Color( 0.980392, 0.380392, 0.286275, 1 )
+custom_colors/font_color = Color( 0.941176, 0.729412, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 3
 custom_constants/shadow_offset_y = 3
-text = "Orbhead"
+text = "The sun snatcher"
 align = 1
 valign = 1
 uppercase = true
 
-[node name="Button" type="Button" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer"]
 margin_top = 183.0
-margin_right = 476.0
-margin_bottom = 203.0
-text = "New Game"
-script = ExtResource( 6 )
+margin_right = 957.0
+margin_bottom = 311.0
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Button"]
-stream = ExtResource( 5 )
-bus = "Other"
-
-[node name="Feedback" type="VBoxContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer"]
-margin_top = 207.0
-margin_right = 476.0
-margin_bottom = 281.0
-
-[node name="TextEdit" type="TextEdit" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback"]
-margin_right = 476.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 0, 50 )
-
-[node name="Send feedback" type="Button" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback"]
-margin_top = 54.0
-margin_right = 476.0
-margin_bottom = 74.0
-text = "Send feedback"
-
-[node name="HTTPRequest" type="HTTPRequest" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback/Send feedback"]
-script = ExtResource( 2 )
-
-[node name="Button2" type="Button" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer"]
-margin_top = 285.0
-margin_right = 476.0
-margin_bottom = 305.0
-text = "Remap keys"
-
-[node name="Volume Settings" type="VBoxContainer" parent="ColorRect"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer"]
+margin_left = 378.0
+margin_right = 578.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Button" parent="ColorRect/Volume Settings"]
-margin_right = 131.0
-margin_bottom = 20.0
-text = "VOLUME SETTINGS"
-
-[node name="Volume Sliders" type="VBoxContainer" parent="ColorRect/Volume Settings"]
-visible = false
-margin_top = 24.0
+[node name="Button" type="TextureButton" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 margin_right = 200.0
-margin_bottom = 134.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+theme = SubResource( 4 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 10 )
+expand = true
+script = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Button"]
+margin_top = 7.0
+margin_right = 200.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0.890196, 0.670588, 0.00392157, 1 )
+text = "New Game"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="TextureButton" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 200.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+theme = SubResource( 4 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 10 )
+expand = true
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Button2"]
+margin_top = 7.0
+margin_right = 200.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0.890196, 0.670588, 0.00392157, 1 )
+text = "Remap Keys"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Volume Settings" type="VBoxContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 200.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="TextureButton" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings"]
+margin_right = 200.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+theme = SubResource( 4 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 10 )
+expand = true
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Label"]
+margin_top = 7.0
+margin_right = 200.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0.890196, 0.670588, 0.00392157, 1 )
+text = "Volume Settings"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Button" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings"]
+visible = false
+margin_top = 44.0
+margin_right = 200.0
+margin_bottom = 75.0
+theme = SubResource( 4 )
+text = "Volume Settings"
+
+[node name="Volume Sliders" type="VBoxContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings"]
+visible = false
+margin_top = 35.0
+margin_right = 200.0
+margin_bottom = 145.0
 script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label2" type="Label" parent="ColorRect/Volume Settings/Volume Sliders"]
+[node name="Label2" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders"]
 margin_right = 200.0
 margin_bottom = 14.0
-text = "MASTER VOLUME"
+text = "Master Volume"
+align = 1
 
-[node name="MasterVolumeSlider" type="HSlider" parent="ColorRect/Volume Settings/Volume Sliders"]
+[node name="MasterVolumeSlider" type="HSlider" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders"]
 margin_top = 18.0
 margin_right = 200.0
 margin_bottom = 34.0
@@ -140,13 +202,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label3" type="Label" parent="ColorRect/Volume Settings/Volume Sliders"]
+[node name="Label3" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders"]
 margin_top = 38.0
 margin_right = 200.0
 margin_bottom = 52.0
-text = "MUSIC VOLUME"
+text = "Music Volume"
+align = 1
 
-[node name="MusicVolumeSlider" type="HSlider" parent="ColorRect/Volume Settings/Volume Sliders"]
+[node name="MusicVolumeSlider" type="HSlider" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders"]
 margin_top = 56.0
 margin_right = 200.0
 margin_bottom = 72.0
@@ -159,13 +222,14 @@ __meta__ = {
 }
 audio_bus_name = "Music"
 
-[node name="Label4" type="Label" parent="ColorRect/Volume Settings/Volume Sliders"]
+[node name="Label4" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders"]
 margin_top = 76.0
 margin_right = 200.0
 margin_bottom = 90.0
-text = "SOUND EFFECTS VOLUME"
+text = "Sounds Effects Volume"
+align = 1
 
-[node name="OtherVolumeSlider" type="HSlider" parent="ColorRect/Volume Settings/Volume Sliders"]
+[node name="OtherVolumeSlider" type="HSlider" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders"]
 margin_top = 94.0
 margin_right = 200.0
 margin_bottom = 110.0
@@ -178,18 +242,69 @@ __meta__ = {
 }
 audio_bus_name = "Other"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-autoplay = true
-bus = "Music"
+[node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer"]
+margin_top = 315.0
+margin_right = 957.0
+margin_bottom = 500.0
+size_flags_vertical = 3
+alignment = 2
+
+[node name="Feedback" type="HBoxContainer" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2"]
+margin_top = 135.0
+margin_right = 957.0
+margin_bottom = 185.0
+theme = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="TextEdit" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback"]
+margin_right = 803.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+
+[node name="Send feedback" type="TextureButton" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback"]
+margin_left = 807.0
+margin_right = 957.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 150, 40 )
+theme = SubResource( 4 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 10 )
+expand = true
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback/Send feedback"]
+margin_top = 10.0
+margin_right = 150.0
+margin_bottom = 35.0
+custom_colors/font_color = Color( 0.890196, 0.670588, 0.00392157, 1 )
+text = "Send Feedback"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback/Send feedback"]
+script = ExtResource( 2 )
+
+[node name="Send feedback2" type="Button" parent="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback"]
+visible = false
+margin_left = 848.0
+margin_right = 957.0
+margin_bottom = 50.0
+text = "Send feedback"
 
 [node name="InputMenu" parent="." instance=ExtResource( 7 )]
 visible = false
 
-[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Button" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Button" method="_on_Button_pressed"]
-[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback/Send feedback" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Feedback/Send feedback/HTTPRequest" method="_on_Send_feedback_pressed"]
-[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/Button2" to="InputMenu" method="_on_Button2_pressed"]
-[connection signal="pressed" from="ColorRect/Volume Settings/Label" to="ColorRect/Volume Settings/Volume Sliders" method="_on_Label_pressed"]
-[connection signal="value_changed" from="ColorRect/Volume Settings/Volume Sliders/MasterVolumeSlider" to="ColorRect/Volume Settings/Volume Sliders/MasterVolumeSlider" method="_on_VolumeSlider_value_changed"]
-[connection signal="value_changed" from="ColorRect/Volume Settings/Volume Sliders/MusicVolumeSlider" to="ColorRect/Volume Settings/Volume Sliders/MusicVolumeSlider" method="_on_VolumeSlider_value_changed"]
-[connection signal="value_changed" from="ColorRect/Volume Settings/Volume Sliders/OtherVolumeSlider" to="ColorRect/Volume Settings/Volume Sliders/OtherVolumeSlider" method="_on_VolumeSlider_value_changed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Button" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Button" method="_on_Button_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Button2" to="InputMenu" method="_on_Button2_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Label" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders" method="_on_Label_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Label2" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders" method="_on_Label_pressed"]
+[connection signal="value_changed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders/MasterVolumeSlider" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders/MasterVolumeSlider" method="_on_VolumeSlider_value_changed"]
+[connection signal="value_changed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders/MusicVolumeSlider" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders/MusicVolumeSlider" method="_on_VolumeSlider_value_changed"]
+[connection signal="value_changed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders/OtherVolumeSlider" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Volume Settings/Volume Sliders/OtherVolumeSlider" method="_on_VolumeSlider_value_changed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback/Send feedback" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback/Send feedback/HTTPRequest" method="_on_Send_feedback_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback/Send feedback2" to="ColorRect/CenterContainer/MarginContainer/VBoxContainer/VBoxContainer2/Feedback/Send feedback/HTTPRequest" method="_on_Send_feedback_pressed"]

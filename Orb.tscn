@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://Assets/Environment/Torch_egypt/torch_frame5.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -39,6 +39,10 @@
 [ext_resource path="res://Assets/song.mp3" type="AudioStream" id=37]
 [ext_resource path="res://Bullet.gd" type="Script" id=38]
 [ext_resource path="res://Assets/bullet.png" type="Texture" id=39]
+[ext_resource path="res://Assets/hit1.mp3" type="AudioStream" id=40]
+[ext_resource path="res://Hit1Sound.gd" type="Script" id=41]
+[ext_resource path="res://Assets/attack.mp3" type="AudioStream" id=42]
+[ext_resource path="res://light.tscn" type="PackedScene" id=43]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -76,14 +80,14 @@ animations = [ {
 "name": "Jump",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
-"loop": true,
-"name": "Fall",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
 "loop": true,
 "name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "Fall",
 "speed": 5.0
 } ]
 
@@ -94,6 +98,15 @@ blend_mode = 1
 
 [sub_resource type="DynamicFont" id=3]
 size = 40
+font_data = ExtResource( 23 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.211765, 0.184314, 0.34902, 1 )
+
+[sub_resource type="Theme" id=10]
+Button/styles/normal = SubResource( 9 )
+
+[sub_resource type="DynamicFont" id=8]
 font_data = ExtResource( 23 )
 
 [node name="ColorRect" type="ColorRect"]
@@ -109,44 +122,64 @@ scale = Vector2( 3.19095, 3.21429 )
 script = ExtResource( 17 )
 
 [node name="Background" type="AnimatedSprite" parent="Stage"]
+scale = Vector2( 1.00788, 1 )
 frames = SubResource( 2 )
 centered = false
 
 [node name="Background2" type="AnimatedSprite" parent="Stage"]
+scale = Vector2( 1.00788, 1 )
 frames = SubResource( 5 )
 centered = false
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Stage"]
-position = Vector2( 199, 134.089 )
+position = Vector2( 200.254, 135.645 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
+frame = 3
 playing = true
+
+[node name="Light2D" parent="Stage/AnimatedSprite" instance=ExtResource( 43 )]
+visible = false
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="Stage"]
-position = Vector2( 317.147, 103.6 )
+position = Vector2( 319.654, 103.6 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
+frame = 3
 playing = true
+
+[node name="Light2D" parent="Stage/AnimatedSprite2" instance=ExtResource( 43 )]
+visible = false
 
 [node name="AnimatedSprite3" type="AnimatedSprite" parent="Stage"]
-position = Vector2( 81.7938, 101.733 )
+position = Vector2( 82.1072, 103.911 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
+frame = 3
 playing = true
 
+[node name="Light2D" parent="Stage/AnimatedSprite3" instance=ExtResource( 43 )]
+visible = false
+
 [node name="Pillars" type="Sprite" parent="Stage"]
+visible = false
+scale = Vector2( 1.008, 1 )
 texture = ExtResource( 28 )
 centered = false
 
 [node name="Pillars2" type="Sprite" parent="Stage"]
+visible = false
+scale = Vector2( 1.008, 1 )
 texture = ExtResource( 19 )
 centered = false
 
 [node name="Foreground" type="Sprite" parent="Stage"]
+scale = Vector2( 1.008, 1 )
 texture = ExtResource( 31 )
 centered = false
 
 [node name="Foreground2" type="Sprite" parent="Stage"]
+scale = Vector2( 1.008, 1 )
 texture = ExtResource( 16 )
 centered = false
 
@@ -200,8 +233,24 @@ local_coords = false
 texture = ExtResource( 39 )
 gravity = Vector2( 0, 0 )
 
+[node name="Light2D" parent="Player" instance=ExtResource( 43 )]
+
 [node name="SpawnManager" type="Node2D" parent="."]
 script = ExtResource( 5 )
+
+[node name="Hit1Sound" type="AudioStreamPlayer" parent="SpawnManager"]
+stream = ExtResource( 40 )
+script = ExtResource( 41 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+light_mask = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.156863 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="JumpSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
@@ -221,7 +270,11 @@ stream = ExtResource( 18 )
 [node name="Song" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 37 )
 
+[node name="AttackSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 42 )
+
 [node name="GUI" type="Control" parent="."]
+light_mask = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -20.0
@@ -243,8 +296,10 @@ __meta__ = {
 }
 
 [node name="MaxScore" type="Label" parent="GUI"]
-margin_right = 211.0
-margin_bottom = 60.0
+margin_left = 30.0
+margin_top = 5.0
+margin_right = 241.0
+margin_bottom = 65.0
 custom_fonts/font = SubResource( 3 )
 text = "Max Score: 0"
 __meta__ = {
@@ -255,7 +310,9 @@ __meta__ = {
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 20.0
 margin_top = -69.0
+margin_right = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -263,7 +320,7 @@ __meta__ = {
 }
 
 [node name="Orbs" type="HBoxContainer" parent="GUI/Inventory"]
-margin_right = 1270.0
+margin_right = 1280.0
 margin_bottom = 69.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -278,4 +335,32 @@ __meta__ = {
 pause_mode = 2
 script = ExtResource( 29 )
 
+[node name="ExitButton" type="Button" parent="Pauser"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -18.0
+margin_top = -15.5
+margin_right = 18.0
+margin_bottom = 15.5
+theme = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Pauser/ExitButton"]
+margin_left = -64.0
+margin_top = 49.5
+margin_right = 101.0
+margin_bottom = 63.5
+text = "Press \"Escape\" to resume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="animation_finished" from="Player/Body" to="Player" method="_on_Body_animation_finished"]
+[connection signal="pressed" from="Pauser/ExitButton" to="Pauser" method="_on_ExitButton_pressed"]

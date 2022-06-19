@@ -1,4 +1,4 @@
-extends Button
+extends TextureButton
 
 
 # Declare member variables here. Examples:
@@ -17,5 +17,5 @@ func _ready():
 
 
 func _on_Button_pressed():
-    $AudioStreamPlayer.play()
+    # $AudioStreamPlayer.play()
     get_tree().change_scene("res://OrbSelection.tscn")

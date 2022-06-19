@@ -20,9 +20,10 @@ var orbName = ""
 var timeSinceShot = 0.0
 var reloadTime = 2.0
 var collidingWith = []
+var boss = false
 # var name = "enemy"
 
-func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool, movementType_: String, shooter_=false, orbName_=""):
+func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool, movementType_: String, shooter_=false, orbName_="", boss_=false):
     name = "enemy"
     add_to_group("enemies")
     self.maxHP = maxHP_
@@ -34,12 +35,15 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
     self.movementType = movementType_
     self.shooter = shooter_
     self.orbName = orbName_
+    self.boss = boss_
     # self.texture = texture
 
     var hitbox = Area2D.new()
     var collisionShape = CollisionShape2D.new()
     collisionShape.shape = CircleShape2D.new()
     collisionShape.shape.radius = texture_.get_size().x / 2
+    if boss:
+        collisionShape.shape.radius = texture_.get_size().x / 4
     hitbox.add_child(collisionShape)
     self.add_child(hitbox)
     texture = texture_
@@ -52,13 +56,23 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
 
     if orbName_ != "":
         var orb = OrbSprite.new(orbName_)
-        orb.scale = Vector2(0.2, 0.2)
+        if not boss:
+            orb.scale = Vector2(0.4, 0.4)
+        else:
+            orb.scale = Vector2(1, 1)
         orb.centered = true
         orb.get_child(0).centered = true
         # var orbSprite = Sprite.new()
         # orbSprite.texture = load(Data.orbs[orbName_]["texture"])
         # orbSprite.scale = Vector2(0.5, 0.5)
         add_child(orb)
+    
+    if boss:
+        var animatedEye = AnimatedSprite.new()
+        animatedEye.frames = load("res://Eye Of Ra.tres")
+        animatedEye.playing = true
+        add_child(animatedEye)
+
 
     scale = Vector2(scale_, scale_)
     # var sprite = Sprite.new()
@@ -79,8 +93,13 @@ func shoot():
         var direction = player.position - self.position
         direction = direction.normalized()
 
-        var bullet = Bullet.new(position, direction, 1, 20, 1, "Linear", 0, "res://Assets/orb1.png", true)
-        player.get_parent().add_child(bullet)    
+        if boss:
+            var bullet = Bullet.new(position, direction, 2, 20, 1, "Linear", 0, "res://Assets/orb1.png", true)
+            player.get_parent().add_child(bullet)
+        else:
+            var bullet = Bullet.new(position, direction, 1, 20, 1, "Linear", 0, "res://Assets/orb1.png", true)
+            player.get_parent().add_child(bullet)
+        # bullet.scale = Vector2(0.2, 0.2)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -124,22 +143,30 @@ func _process(delta):
     for enemy in collidingWith:
         # cspeed = 0
         # velocity = Vector2(0, 0)
-        distance = enemy.position - self.position
-        var wallNormal = Vector2(distance.x, -distance.y).normalized()
-        velocity = wallNormal * velocity.dot(wallNormal) - distance.normalized() * cspeed
+        var distanceE = enemy.position - self.position
+        var wallNormal = Vector2(distanceE.x, -distanceE.y).normalized()
+        velocity = wallNormal * velocity.dot(wallNormal) - distanceE.normalized() * cspeed
         if movementType == "homing":
-            cspeed = 0
+            cspeed *= wallNormal.normalized().dot(distance.normalized())
+            translate(-distanceE.normalized()*speed*200*delta)
         # var minDistance = enemy.texture.get_width()/2.0 + self.texture.get_width()/2.0
         # translate(-20*speed*distance/pow(distance.length()-minDistance, 2))
         # translate(minDistance*distance.normalized() - distance)
         # translate((-distance.length() + (enemy.texture.get_width()/2.0 + self.texture.get_width()/2.0)+1)*distance.normalized())
 
 func takeDamage(damage):
+    # if lastHit >= 0.1:
+    get_parent().get_node("Hit1Sound").play()
     self.currentHP -= damage
     if self.currentHP <= 0 and alive:
         alive = false
         queue_free()
-        player.addScore(1)
+        # player.addScore(1)
+        if boss:
+            player.addScore(10)
+            # player.getUpgrade()
+        else:
+            player.addScore(1)
     else:
         self_modulate = Color(1, 0, 0, 1)
         lastHit = 0.0

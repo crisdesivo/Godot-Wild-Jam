@@ -5,10 +5,12 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var beetleAsset = load("res://Assets/beetle.png")
 var ghostieAsset = load("res://Assets/beetle.png")
 var barqueAsset = load("res://Assets/barque.png")
+var eyeAsset = load("res://Assets/Eye_of_Ra/sun_disk_body.png")
 var lastSummon = 100.0
 var summonDelay = 1.0
 var elapsed_time = 0.0
 var difficulty = 0.0
+var lastBoss = 10.0 # TODO set as 0
 
 var enemies = {
     "beetle": {
@@ -20,39 +22,113 @@ var enemies = {
         "flip": false,
         "movement": "attracted",
         "shooter": false,
-        "orbName": "Orb of Power"
+        "orbName": "Orb of Power",
+        "boss": false
     },
     "ghostie": {
         "texture": ghostieAsset,
         "speed": 2,
         "hp": 3,
-        "scale": 1.5,
+        "scale": 2,
         "rotate": true,
         "flip": false,
         "movement": "homing",
         "shooter": false,
-        "orbName": "Orb of Power"
+        "orbName": "Water Gun Orb",
+        "boss": false
     },
     "barque": {
         "texture": barqueAsset,
         "speed": 0.5,
         "hp": 2,
-        "scale": 1,
+        "scale": 3,
         "rotate": false,
         "flip": false,
         "movement": "attracted",
         "shooter": true,
-        "orbName": "Crossbow Orb"
+        "orbName": "Crossbow Orb",
+        "boss": false
+    },
+    "bossM":{
+        "texture": eyeAsset,
+        "speed": 0.2,
+        "hp": 200,
+        "scale": 3,
+        "rotate": false,
+        "flip": false,
+        "movement": "homing",
+        "shooter": false,
+        "orbName": "Orb of Power",
+        "boss": true
+    },
+    "bossF":{
+        "texture": eyeAsset,
+        "speed": 1,
+        "hp": 50,
+        "scale": 3,
+        "rotate": false,
+        "flip": false,
+        "movement": "homing",
+        "shooter": false,
+        "orbName": "Water Gun Orb",
+        "boss": true
+    },
+    "bossS":{
+        "texture": eyeAsset,
+        "speed": 1,
+        "hp": 50,
+        "scale": 3,
+        "rotate": false,
+        "flip": false,
+        "movement": "attracted",
+        "shooter": true,
+        "orbName": "Crossbow Orb",
+        "boss": true
     }
 }
 
 var enemyWaves = [
+    # TODO remove fists
+
+    # {
+    #     "delay": 0,
+    #     "enemies": {
+    #         "barque": 5
+    #     },
+    #     "difficulty": 0.0
+    # },
+    # {
+    #     "delay": 2.0,
+    #     "enemies": {
+    #         "beetle": 10
+    #     },
+    #     "difficulty": 0
+    # },
     {
         "delay": 2.0,
         "enemies": {
+            "bossM": 1,
             "beetle": 10
         },
-        "difficulty": 0
+        "difficulty": 1,
+        "boss": true
+    },
+    {
+        "delay": 2.0,
+        "enemies": {
+            "bossF": 2,
+            "ghostie": 10
+        },
+        "difficulty": 1,
+        "boss": true
+    },
+    {
+        "delay": 1.0,
+        "enemies": {
+            "bossS": 3,
+        },
+        "difficulty": 1,
+        "boss": true
     },
     {
         "delay": 3.0,
@@ -64,7 +140,14 @@ var enemyWaves = [
         "enemies": {
             "barque": 5
         },
-        "difficulty": 0.2
+        "difficulty": 0.0
+    },
+    {
+        "delay": 1.0,
+        "enemies": {
+            "beetle": 20
+        },
+        "difficulty": 0.5
     },
     {
         "delay": 1.0,
@@ -73,6 +156,14 @@ var enemyWaves = [
             "ghostie": 50
         },
         "difficulty": 2
+    },
+    {
+        "delay": 1.0,
+        "enemies": {
+            "beetle": 20,
+            "barque": 10
+        },
+        "difficulty": 2.5
     },
 ]
 
@@ -87,15 +178,26 @@ func _ready():
     
     while true:
         var appropiateWaves = []
+        # print("difficulty " + str(difficulty))
         for wave in enemyWaves:
             if wave["difficulty"] <= difficulty:
-                appropiateWaves.append(wave)
+                if "boss" in wave and lastBoss >= 10:
+                    appropiateWaves.append(wave)
+                elif not "boss" in wave:
+                    appropiateWaves.append(wave)
+        # print(len(appropiateWaves))
         var index = rng.randi() % len(appropiateWaves)
         var wave = appropiateWaves[index]
     # for wave in enemyWaves:
-        yield(spawnWave(wave), "completed")
-        yield(get_tree().create_timer(2, true), "timeout")
+        if "boss" in wave:
+            lastBoss = 0.0
+            yield(spawnWave(wave, true), "completed")
+            # get_parent().get_node("Player").getUpgrade()
+        else:
+            yield(spawnWave(wave, false), "completed")
+        yield(get_tree().create_timer(2/(1+difficulty/10), false), "timeout")
         difficulty += 1.0
+        lastBoss += 1
 
 # func _process(delta):
 #     if len(enemyWaves) == 0:
@@ -128,7 +230,7 @@ func _ready():
 #         enemyWaves.remove(index)
 
 func spawnEnemy(enemyName):
-    var enemy = Enemy.new(enemies[enemyName]["hp"], enemies[enemyName]["speed"], true, enemies[enemyName]["texture"], enemies[enemyName]["scale"], enemies[enemyName]["rotate"], enemies[enemyName]["flip"], enemies[enemyName]["movement"], enemies[enemyName]["shooter"], enemies[enemyName]["orbName"])
+    var enemy = Enemy.new(enemies[enemyName]["hp"], enemies[enemyName]["speed"], true, enemies[enemyName]["texture"], enemies[enemyName]["scale"], enemies[enemyName]["rotate"], enemies[enemyName]["flip"], enemies[enemyName]["movement"], enemies[enemyName]["shooter"], enemies[enemyName]["orbName"], enemies[enemyName]["boss"])
     var location = rng.randi_range(0, 3)
     if location == 0:
         enemy.position = Vector2(rng.randi_range(0, int(get_viewport_rect().size.x)), 0)
@@ -141,24 +243,31 @@ func spawnEnemy(enemyName):
     add_child(enemy)
 
 
-func spawnWave(wave):
+func spawnWave(wave, isBoss):
     var delay = wave["delay"]/(1+difficulty*0.1)
-    var enemies_ = wave["enemies"].duplicate()
-    var totalAmount = 0
-    for enemy in enemies_:
-        totalAmount += wave["enemies"][enemy]
+    if isBoss:
+        for enemy in wave["enemies"]:
+            for i in wave["enemies"][enemy]:
+                spawnEnemy(enemy)
+                yield(get_tree().create_timer(delay, false), "timeout")
+        yield(get_tree().create_timer(delay, false), "timeout")
+    else:
+        var enemies_ = wave["enemies"].duplicate()
+        var totalAmount = 0
+        for enemy in enemies_:
+            totalAmount += wave["enemies"][enemy]
 
-    var i = 0
-    while i < totalAmount:
-        var enemyIndex = rng.randi_range(0, len(enemies_)-1)
-        var enemy = enemies_.keys()[enemyIndex]
-        enemies_[enemy] -= 1
-        if wave["enemies"][enemy] <= 0:
-            enemies_.erase(enemy)
-            
-        spawnEnemy(enemy)
-        yield(get_tree().create_timer(delay, true), "timeout")
-        i+=1
+        var i = 0
+        while i < totalAmount:
+            var enemyIndex = rng.randi_range(0, len(enemies_)-1)
+            var enemy = enemies_.keys()[enemyIndex]
+            enemies_[enemy] -= 1
+            if wave["enemies"][enemy] <= 0:
+                enemies_.erase(enemy)
+                
+            spawnEnemy(enemy)
+            yield(get_tree().create_timer(delay, false), "timeout")
+            i+=1
     yield(get_tree(), "idle_frame")
     # emit_signal("finished")
     

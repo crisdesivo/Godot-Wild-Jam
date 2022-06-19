@@ -1,5 +1,7 @@
 extends Node
 
+onready var light = preload("res://light.tscn");
+
 var orbs = {
     # "Linear", 5, 45, "Equidistant", 1, 10, 0, 0.5
     "Fan Orb": {
@@ -29,11 +31,11 @@ var orbs = {
         "bulletsPerShot": 1,
         "spreadAngle": 45,
         "spreadDistribution": "Random",
-        "damagePerBullet": 0.5,
+        "damagePerBullet": 1,
         "bulletSpeed": 7,
         "pierce": 0,
         "bulletLifetime": 1.5,
-        "reloadTime": 0.05,
+        "reloadTime": 0.1,
         "bulletTexture": "res://Assets/bullet.png",
         "numberOfJumps": -1,
         "jumpReload": 0.5,
@@ -91,7 +93,7 @@ var orbs = {
         "summon": true,
         "reloadTime": 10,
         "summonLifeTime": 5,
-        "summonReload": 0.5,
+        "summonReload": 1,
         "summonSpeed": 3,
         "summonLocation": "Top",
         "summonTexture": "res://Assets/orb1.png",

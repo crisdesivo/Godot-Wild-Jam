@@ -9,36 +9,38 @@ var profiles = {
 	2: 'profile_alternate',
 }
 var profile_alternate = {
-	'ui_up': KEY_W,
-	'ui_down': KEY_S,
-	'ui_left': KEY_A,
-	'ui_right': KEY_D,
-	"up": KEY_UP,
-	"down": KEY_DOWN,
-	"left": KEY_LEFT,
-	"right": KEY_RIGHT,
-	"Change Left": KEY_0,
-	"Change Right": KEY_PERIOD,
+	'shoot_up': KEY_W,
+	'shoot_down': KEY_S,
+	'shoot_left': KEY_A,
+	'shoot_right': KEY_D,
+	"jump": KEY_UP,
+	"descend": KEY_DOWN,
+	"move_left": KEY_LEFT,
+	"move_right": KEY_RIGHT,
+	"Change Orb Left": KEY_0,
+	"Change Orb Right": KEY_PERIOD,
+	"escape": KEY_BACKSPACE,
 	
 }
 var profile_normal = {
-	'ui_up': KEY_UP,
-	'ui_down': KEY_DOWN,
-	'ui_left': KEY_LEFT,
-	'ui_right': KEY_RIGHT,
-	"up": KEY_W,
-	"down": KEY_S,
-	"left": KEY_A,
-	"right": KEY_D,
-	"Change Left": KEY_Q,
-	"Change Right": KEY_E,
+	'shoot_up': KEY_UP,
+	'shoot_down': KEY_DOWN,
+	'shoot_left': KEY_LEFT,
+	'shoot_right': KEY_RIGHT,
+	"jump": KEY_W,
+	"descend": KEY_S,
+	"move_left": KEY_A,
+	"move_right": KEY_D,
+	"Change Orb Left": KEY_Q,
+	"Change Orb Right": KEY_E,
+	"escape": KEY_ESCAPE,
 }
 var profile_custom = profile_normal
 
 func change_profile(id):
 	current_profile_id = id
 	var profile = get(profiles[id])
-	var is_customizable = true if id == 2 else false
+	var is_customizable = true if id == 0 else false
 	
 	for action_name in profile.keys():
 		change_action_key(action_name, profile[action_name])

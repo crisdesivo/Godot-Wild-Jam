@@ -16,6 +16,7 @@ func _init(speed_: float, texture_: Texture, scale_: float, movementType_: Strin
     centered = true
     add_to_group("ally")
     self.speed = speed_
+    self.reloadTime = 0.5
     self.movementType = movementType_
     self.texture = texture_
     # scale = Vector2(0.2, 0.2)
