@@ -37,7 +37,7 @@ var maxScore = 0
 # onready var orbs = [Orb.new("Crossbow", get_parent(), self), Orb.new("Water Gun", get_parent(), self), Orb.new("Fan", get_parent(), self)]
 var orbs = []
 var selectedOrb = 0
-var changeOrbDelay = 0.1
+var changeOrbDelay = 0.3
 var changeOrbTime = changeOrbDelay + 1
 
 func _ready():
@@ -149,7 +149,7 @@ func jump():
             get_parent().get_node("JumpSound").play()
         verticalSpeed -= jumpSpeed
         verticalSpeed = max(-maxVerticalSpeed, verticalSpeed)
-        print("vertical speed: " + str(verticalSpeed))
+        # print("vertical speed: " + str(verticalSpeed))
         falling = true
         timeJumped = 0
 
@@ -185,7 +185,7 @@ func _on_Area2D_body_entered(body:Node):
 
 func _on_Area2D_area_entered(area:Area2D):
     # print(area.get_parent().damage)
-    print(area.get_parent())
+    # print(area.get_parent())
     pass # Replace with function body.
 
 func _on_Body_animation_finished():
@@ -198,6 +198,8 @@ func _on_Body_animation_finished():
     pass # Replace with function body.
 
 func changeOrb(index: int):
+    $"../OrbSwitch".play()
+    yield(get_tree().create_timer(0.1, true), "timeout")
     orbs[selectedOrb].deselect()
     selectedOrb = index
     orbs[selectedOrb].select()

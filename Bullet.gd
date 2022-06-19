@@ -17,7 +17,7 @@ var pierced = -1
 var gravityMagnitude = 20
 
 
-func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: float, damage_: float, movementType_: String, pierce_: int):
+func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: float, damage_: float, movementType_: String, pierce_: int, bulletTexture, enemy=false):
     name = "bullet"
     add_to_group("bullets")
     self.position = position_
@@ -34,15 +34,18 @@ func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: fl
     var collisionShape = CollisionShape2D.new()
     collisionShape.shape = CircleShape2D.new()
     rigidBody.add_child(collisionShape)
-    rigidBody.collision_layer = 1
-    rigidBody.collision_mask = 2
+    if !enemy:
+        rigidBody.collision_layer = 1
+        rigidBody.collision_mask = 2
+    else:
+        rigidBody.collision_layer = 4
+        rigidBody.collision_mask = 1
     add_child(rigidBody)
 
-    texture = load("res://Assets/orb1.png")
+    texture = load(bulletTexture) #load("res://Assets/orb1.png")
     collisionShape.shape.radius = texture.get_size().x / 2
-    scale = Vector2(0.05, 0.05)
-
-
+    if enemy:
+        scale = Vector2(0.02, 0.02)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -68,7 +71,7 @@ func _process(delta):
     if timeAlive > lifetime:
         queue_free()
 
-func hit(enemy: Enemy):
+func hit(enemy):
     enemy.takeDamage(damage)
     # enemy.currentHP -= damage
     pierced += 1

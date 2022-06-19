@@ -1,6 +1,7 @@
 extends MarginContainer
 
 signal orbSelected(orbName)
+signal cancel
 
 var selectedOrb: String
 
@@ -52,6 +53,12 @@ func showOrb(orb):
     selectedOrb = orb.orbName
     $VBoxContainer/ColorRect/Description.text = Data.orbs[orb.orbName]["description"]
 
+func changePrompt(prompt: String):
+    $VBoxContainer/Prompt.text = prompt
+
 func _on_Button_pressed():
     if selectedOrb != "" and selectedOrb != null:
         emit_signal("orbSelected", selectedOrb)
+
+func _on_Button2_pressed():
+    emit_signal("cancel")

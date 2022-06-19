@@ -1,0 +1,152 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://OrbSelection.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Oswald/static/Oswald-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Oswald/static/Oswald-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 50
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 38
+font_data = ExtResource( 2 )
+
+[node name="OrbSelection" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 200.0
+margin_top = 100.0
+margin_right = -200.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 870.0
+margin_bottom = 620.0
+custom_constants/separation = 10
+
+[node name="Prompt" type="Label" parent="VBoxContainer"]
+margin_right = 870.0
+margin_bottom = 75.0
+custom_fonts/font = SubResource( 1 )
+text = "Choose an orb"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="Orbs" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 85.0
+margin_right = 870.0
+margin_bottom = 185.0
+alignment = 1
+
+[node name="Orb1" type="Button" parent="VBoxContainer/Orbs"]
+margin_left = 281.0
+margin_right = 381.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Orb2" type="Button" parent="VBoxContainer/Orbs"]
+margin_left = 385.0
+margin_right = 485.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Orb3" type="Button" parent="VBoxContainer/Orbs"]
+margin_left = 489.0
+margin_right = 589.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer"]
+margin_top = 195.0
+margin_right = 870.0
+margin_bottom = 395.0
+rect_min_size = Vector2( 0, 200 )
+color = Color( 0.00392157, 0.0156863, 0.14902, 1 )
+
+[node name="Name" type="Label" parent="VBoxContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -148.0
+custom_fonts/font = SubResource( 2 )
+text = "Orb of water"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="VBoxContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 52.0
+custom_fonts/font = SubResource( 2 )
+text = "Attacks with pressurized water"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 405.0
+margin_right = 870.0
+margin_bottom = 468.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 433.0
+margin_bottom = 63.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 0.427451, 0.14902, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Select"
+
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 437.0
+margin_right = 870.0
+margin_bottom = 63.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 1, 0.427451, 0.14902, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Cancel"
+
+[node name="Orbs2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 478.0
+margin_right = 870.0
+margin_bottom = 578.0
+alignment = 1
+
+[node name="Orb1" type="Control" parent="VBoxContainer/Orbs2"]
+margin_left = 281.0
+margin_right = 381.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Orb2" type="Control" parent="VBoxContainer/Orbs2"]
+margin_left = 385.0
+margin_right = 485.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Orb3" type="Control" parent="VBoxContainer/Orbs2"]
+margin_left = 489.0
+margin_right = 589.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[connection signal="pressed" from="VBoxContainer/Orbs/Orb1" to="." method="_on_Orb1_pressed"]
+[connection signal="pressed" from="VBoxContainer/Orbs/Orb2" to="." method="_on_Orb2_pressed"]
+[connection signal="pressed" from="VBoxContainer/Orbs/Orb3" to="." method="_on_Orb3_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button2" to="." method="_on_Button2_pressed"]

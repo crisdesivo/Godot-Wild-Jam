@@ -15,9 +15,14 @@ var rotate = false
 var flip = false
 var movementType: String
 var velocity: Vector2
+var shooter: bool
+var orbName = ""
+var timeSinceShot = 0.0
+var reloadTime = 2.0
+var collidingWith = []
 # var name = "enemy"
 
-func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool, movementType_: String):
+func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_: float, rotate_: bool, flip_: bool, movementType_: String, shooter_=false, orbName_=""):
     name = "enemy"
     add_to_group("enemies")
     self.maxHP = maxHP_
@@ -27,7 +32,10 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
     self.rotate = rotate_
     self.flip = flip_
     self.movementType = movementType_
+    self.shooter = shooter_
+    self.orbName = orbName_
     # self.texture = texture
+
     var hitbox = Area2D.new()
     var collisionShape = CollisionShape2D.new()
     collisionShape.shape = CircleShape2D.new()
@@ -40,6 +48,18 @@ func _init(maxHP_: float, speed_: float, flies_: bool, texture_: Texture, scale_
     hitbox.collision_mask = 2
 
     hitbox.connect("area_entered", self, "collision")
+    hitbox.connect("area_exited", self, "exit_collision")
+
+    if orbName_ != "":
+        var orb = OrbSprite.new(orbName_)
+        orb.scale = Vector2(0.2, 0.2)
+        orb.centered = true
+        orb.get_child(0).centered = true
+        # var orbSprite = Sprite.new()
+        # orbSprite.texture = load(Data.orbs[orbName_]["texture"])
+        # orbSprite.scale = Vector2(0.5, 0.5)
+        add_child(orb)
+
     scale = Vector2(scale_, scale_)
     # var sprite = Sprite.new()
     # add_child(sprite)
@@ -53,8 +73,18 @@ func _ready():
 
     pass # Replace with function body.
 
+func shoot():
+    if timeSinceShot >= reloadTime:
+        timeSinceShot = 0.0
+        var direction = player.position - self.position
+        direction = direction.normalized()
+
+        var bullet = Bullet.new(position, direction, 1, 20, 1, "Linear", 0, "res://Assets/orb1.png", true)
+        player.get_parent().add_child(bullet)    
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+    timeSinceShot += delta
     lastHit += delta
     lastBoost += delta
     if lastBoost >= 1.01:
@@ -65,6 +95,9 @@ func _process(delta):
     var enemyPosition = self.get_global_position()
     var distance = (playerPosition - enemyPosition).normalized()
     if movementType == "homing":
+        # if len(collidingWith) > 0:
+        #     pass
+        # else:
         translate(distance * cspeed * 100 * delta)
     elif movementType == "attracted":
         self.velocity += distance * speed * delta * 2
@@ -81,11 +114,25 @@ func _process(delta):
                 flip_h = false
             else:
                 flip_h = true
-    # position.x -= 0.5
-    # position.y += 0.5
 
     if lastHit >= 0.1:
         self_modulate = Color(1, 1, 1, 1)
+    
+    if shooter:
+        shoot()
+
+    for enemy in collidingWith:
+        # cspeed = 0
+        # velocity = Vector2(0, 0)
+        distance = enemy.position - self.position
+        var wallNormal = Vector2(distance.x, -distance.y).normalized()
+        velocity = wallNormal * velocity.dot(wallNormal) - distance.normalized() * cspeed
+        if movementType == "homing":
+            cspeed = 0
+        # var minDistance = enemy.texture.get_width()/2.0 + self.texture.get_width()/2.0
+        # translate(-20*speed*distance/pow(distance.length()-minDistance, 2))
+        # translate(minDistance*distance.normalized() - distance)
+        # translate((-distance.length() + (enemy.texture.get_width()/2.0 + self.texture.get_width()/2.0)+1)*distance.normalized())
 
 func takeDamage(damage):
     self.currentHP -= damage
@@ -107,7 +154,15 @@ func collision(area):
         # cspeed = 0
         var distance = bullet.position - self.position
         var minDistance = bullet.texture.get_width()/2.0 + self.texture.get_width()/2.0
-        translate(-50*speed*distance/pow(distance.length()-minDistance, 2))
+        # translate(-50*speed*distance/pow(distance.length()-minDistance, 2))
+        # translate((minDistance*distance.normalized() - distance)/8.0)
+
+        collidingWith.append(bullet)
         # print("collision between two enemiess")
         # queue_free()
         # bullet.queue_free()
+
+func exit_collision(area):
+    var bullet = area.get_parent()
+    if bullet.is_in_group("enemies"):
+        collidingWith.erase(bullet)

@@ -4,6 +4,7 @@ var orbs = {
     # "Linear", 5, 45, "Equidistant", 1, 10, 0, 0.5
     "Fan Orb": {
         "passive": false,
+        "summon": false,
         "bulletMovement": "Linear",
         "bulletsPerShot": 5,
         "spreadAngle": 45,
@@ -18,10 +19,12 @@ var orbs = {
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
         "color": Color(0.5, 0.5, 0.5),
+        "texture": "res://Assets/Orb_Base.png",
         "description": "A basic orb that does damage to enemies in the shape of a fan."
     },
     "Water Gun Orb": {
         "passive": false,
+        "summon": false,
         "bulletMovement": "Gravity",
         "bulletsPerShot": 1,
         "spreadAngle": 45,
@@ -31,15 +34,17 @@ var orbs = {
         "pierce": 0,
         "bulletLifetime": 1.5,
         "reloadTime": 0.05,
-        "bulletTexture": "res://Assets/orb1.png",
+        "bulletTexture": "res://Assets/bullet.png",
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
         "color": Color(0, 0.5, 1),
+        "texture": "res://Assets/Orb_Base.png",
         "description": "Attacks with pressurised water."
     },
     "Crossbow Orb": {
         "passive": false,
+        "summon": false,
         "bulletMovement": "Linear",
         "bulletsPerShot": 1,
         "spreadAngle": 0,
@@ -54,26 +59,56 @@ var orbs = {
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
         "color": Color(0.7, 0, 0),
+        "texture": "res://Assets/Orb_Base.png",
         "description": "Shoots in a straight line, high damage and pierce, low reload rate."
     },
     "Orb of Rapid Fire": {
         "passive": true,
+        "summon": false,
         "fireRateBonus": 0.25,
         "bulletTexture": "res://Assets/orb1.png",
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
         "color": Color(0.7, 0.3, 0.1),
+        "texture": "res://Assets/Orb_Base.png",
         "description": "Passive orb. Increases fire rate of all your orbs."
     },
     "Orb of Power": {
         "passive": true,
+        "summon": false,
         "damageBonus": 0.25,
         "bulletTexture": "res://Assets/orb1.png",
         "numberOfJumps": -1,
         "jumpReload": 0.5,
         "shootRotationMultiplier": -15,
         "color": Color(0.3, 0.35, 0.4),
+        "texture": "res://Assets/Orb_Base.png",
         "description": "Passive orb. Increases damage of all your orbs."
+    },
+    "Rain Summoner Orb": {
+        "passive": false,
+        "summon": true,
+        "reloadTime": 10,
+        "summonLifeTime": 5,
+        "summonReload": 0.5,
+        "summonSpeed": 3,
+        "summonLocation": "Top",
+        "summonTexture": "res://Assets/orb1.png",
+        "bulletMovement": "Gravity",
+        "bulletsPerShot": 1,
+        "spreadAngle": 45,
+        "spreadDistribution": "Random",
+        "damagePerBullet": 0.5,
+        "bulletSpeed": 7,
+        "pierce": 0,
+        "bulletLifetime": 1.5,
+        "bulletTexture": "res://Assets/orb1.png",
+        "numberOfJumps": -1,
+        "jumpReload": 0.5,
+        "shootRotationMultiplier": -15,
+        "color": Color(0, 0, 0.5),
+        "texture": "res://Assets/Orb_Base.png",
+        "description": "Summoning orb. Summon a cloud that rain over the enemies."
     }
 }

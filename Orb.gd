@@ -12,7 +12,7 @@ var pierce = 0
 var bulletLifetime = 10.0
 var reloadTime = 0.7
 var timeSinceShot = 1.0
-var bulletTexture = load("res://Assets/Character/Character_Orb/character_orb.png")
+var bulletTexture = "res://Assets/Character/Character_Orb/character_orb.png"
 var numberOfJumps = 2
 var jumpReload = 0.5
 
@@ -29,6 +29,16 @@ var spreadBonus = 0
 var fireBonus = 0
 var iceBonus = 0
 
+# summon variables
+
+var summon: bool
+var summonReload: float
+var summonLifeTime: float
+var summonSpeed: float
+var summonLocation: String
+var summonTexture: String
+
+
 var shootRotationMultiplier: float
 var bulletParent_: Node
 var player_: Node
@@ -42,6 +52,7 @@ onready var orbs = Data.orbs
 
 func _init(orbName: String, bulletsParent: Node, player: Node):
     visible = false
+    summon = Data.orbs[orbName]["summon"]
     if Data.orbs[orbName]["passive"]:
         if "fireRateBonus" in Data.orbs[orbName]:
             fireRateBonus = Data.orbs[orbName]["fireRateBonus"]
@@ -62,17 +73,24 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
         self.jumpReload = Data.orbs[orbName]["jumpReload"]
         self.shootRotationMultiplier = Data.orbs[orbName]["shootRotationMultiplier"]
         self.timeSinceShot = self.reloadTime
+    
+    if summon:
+        summonReload = Data.orbs[orbName]["summonReload"]
+        summonLifeTime = Data.orbs[orbName]["summonLifeTime"]
+        summonSpeed = Data.orbs[orbName]["summonSpeed"]
+        summonLocation = Data.orbs[orbName]["summonLocation"]
+        summonTexture = Data.orbs[orbName]["summonTexture"]
     self.player_ = player
     self.bulletParent_ = bulletsParent
 
-    texture = load("res://.import/Orb_Base.png-0279880cacbbd258f1af6653654c34fd.stex")
+    texture = load(Data.orbs[orbName]["texture"])
     self_modulate = Color(1, 1, 1, 62.0/255.0)
     player.add_child(self)
     var coloring = Sprite.new()
     coloring.texture = texture
     coloring.self_modulate = Data.orbs[orbName]["color"] #Color(1, 1, 0, 1)
     add_child(coloring)
-    # scale = Vector2(3, 3)
+    scale = Vector2(1, 1)
 
     duplicate = Sprite.new()
     duplicate.texture = texture
@@ -94,7 +112,9 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
     # orbsGUI.add_child(duplicate)
 
     var hitbox = Area2D.new()
+    hitbox.collision_layer = 1
     hitbox.collision_mask = 2
+    # hitbox.set_collision_mask_bit(0b00000000000000000000, true)
     var collisionShape = CollisionShape2D.new()
     collisionShape.shape = CircleShape2D.new()
     collisionShape.shape.radius = texture.get_width() / 2.0
@@ -103,22 +123,33 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
     hitbox.connect("area_entered", self, "on_area_entered")
     add_child(hitbox)
 
+# func shootBase()
 
 func shoot():
     if self.timeSinceShot >= finalReloadTime:
         self.timeSinceShot = 0
-        # static func shoot(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
-        
-        var direction = (player_.get_viewport().get_mouse_position() ) - player_.position
-        direction = direction.normalized()
-        BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime)
-        # rotate(shootRotationMultiplier*stepRotation)
-        rotate(-60*stepRotation)
+        if summon:
+            var ally = Summon.new(summonSpeed, load(summonTexture), 1, "")
+            player_.get_parent().add_child(ally)
+            ally.position = position
+        else:
+            # static func shoot(parent: Node, position: Vector2, direction: Vector2, bulletMovement: String, bulletsPerShot: int, spreadAngle: float, spreadDistribution: String, damagePerBullet: int, bulletSpeed: float, pierce: int, bulletLifetime: float):
+            
+            var direction = (player_.get_viewport().get_mouse_position() ) - player_.position
+            direction = direction.normalized()
+            BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime, self.bulletTexture, false)
+            # rotate(shootRotationMultiplier*stepRotation)
+            rotate(-60*stepRotation)
 
 func shootDirection(direction: Vector2):
     if self.timeSinceShot >= finalReloadTime:
         self.timeSinceShot = 0
-        BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime)
+        if summon:
+            var ally = Summon.new(summonSpeed, load(summonTexture), 0.2, "")
+            ally.position = get_parent().position
+            player_.get_parent().add_child(ally)
+        else:
+            BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime, self.bulletTexture, false)
 
 func deselect():
     # player_.remove_child(self)
@@ -149,7 +180,7 @@ func unequip():
     removeBonus()
 
 func _process(delta):
-    rotate(stepRotation)
+    # rotate(stepRotation)
     timeSinceShot += delta
     finalReloadTime = reloadTime/(1+player_.fireRateBonus)
     if selected:
@@ -160,7 +191,7 @@ func _process(delta):
             player_.get_node("ReloadBar").visible = false
 
 func on_area_entered(area: Area2D):
-    print(area.get_parent())
+    # print(area.get_parent())
     # restart scene
-    if area.get_parent().is_in_group("enemies"):
+    if area.get_parent().is_in_group("enemies") or area.get_parent().is_in_group("bullets"):
         get_tree().reload_current_scene()

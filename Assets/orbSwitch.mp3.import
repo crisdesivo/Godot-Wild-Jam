@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/orbSwitch.mp3-d12665c1c14fc401baaddb3a65c70bd1.mp3str"
+
+[deps]
+
+source_file="res://Assets/orbSwitch.mp3"
+dest_files=[ "res://.import/orbSwitch.mp3-d12665c1c14fc401baaddb3a65c70bd1.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

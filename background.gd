@@ -1,5 +1,13 @@
 extends AnimatedSprite
 
+var timeOn = 0
+var maxTime = 10*60
+
+func _process(delta):
+    if timeOn < maxTime:
+        timeOn += delta
+        var transparency = timeOn/maxTime
+        
 
 # func _ready():
 #     var viewportWidth = get_viewport().size.x
