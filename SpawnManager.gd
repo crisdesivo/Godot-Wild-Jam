@@ -221,7 +221,7 @@ func _ready():
 #         enemyWaves.remove(index)
 
 func spawnEnemy(enemyName):
-    var enemy = Enemy.new(enemies[enemyName]["hp"], enemies[enemyName]["speed"], true, enemies[enemyName]["texture"], enemies[enemyName]["scale"], enemies[enemyName]["rotate"], enemies[enemyName]["flip"], enemies[enemyName]["movement"], enemies[enemyName]["shooter"], enemies[enemyName]["orbName"], enemies[enemyName]["boss"])
+    var enemy = Enemy.new(enemies[enemyName]["hp"]*(1+difficulty/100), enemies[enemyName]["speed"]*(1+difficulty/100), true, enemies[enemyName]["texture"], enemies[enemyName]["scale"], enemies[enemyName]["rotate"], enemies[enemyName]["flip"], enemies[enemyName]["movement"], enemies[enemyName]["shooter"], enemies[enemyName]["orbName"], enemies[enemyName]["boss"])
     var location = rng.randi_range(0, 3)
     if location == 0:
         enemy.position = Vector2(rng.randi_range(0, int(get_viewport_rect().size.x)), 0)
