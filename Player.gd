@@ -184,7 +184,7 @@ func addScore(points):
         file.open("user://MaxScore.save", File.WRITE)
         file.store_var(maxScore)
         file.close()
-    if score >= nextLevel: # TODO set as nextLevel 
+    if score >= nextLevel:
         nextLevel += nextLevel + pow((nextLevel/4),2)
         get_tree().paused = true
         get_parent().get_node("OwnedOrbSelection").visible = true

@@ -18,8 +18,6 @@ var jumpReload = 0.5
 
 var finalReloadTime = reloadTime
 
-# TODO
-# var passive = false
 var fireRateBonus = 0
 var damageBonus = 0
 var speedBonus = 0
