@@ -49,7 +49,7 @@ func _ready():
     maxScore = Variables.maxScore
     get_parent().get_node("GUI/MaxScore").text = "Max Score: " + str(Variables.maxScore)
     for orbName in Variables.initialOrbs:
-        orbs.append(Orb.new(orbName, get_parent(), self))
+        orbs.append(Orb.new(orbName, get_parent().get_node("Bullets"), self))
         orbs[0].equip()
     orbs[selectedOrb].select()
     pass

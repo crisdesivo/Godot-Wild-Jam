@@ -136,6 +136,7 @@ centered = false
 position = Vector2( 200.254, 135.645 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
+frame = 1
 playing = true
 
 [node name="Light2D" parent="Stage/AnimatedSprite" instance=ExtResource( 43 )]
@@ -145,6 +146,7 @@ visible = false
 position = Vector2( 319.654, 103.6 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
+frame = 1
 playing = true
 
 [node name="Light2D" parent="Stage/AnimatedSprite2" instance=ExtResource( 43 )]
@@ -154,6 +156,7 @@ visible = false
 position = Vector2( 82.1072, 103.911 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
+frame = 1
 playing = true
 
 [node name="Light2D" parent="Stage/AnimatedSprite3" instance=ExtResource( 43 )]
@@ -189,7 +192,6 @@ script = ExtResource( 2 )
 position = Vector2( 0, 20 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="Sprite" type="Sprite" parent="Player"]
@@ -361,6 +363,8 @@ text = "Press \"Escape\" to resume"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Bullets" type="Node2D" parent="."]
 
 [node name="OwnedOrbSelection" parent="." instance=ExtResource( 44 )]
 visible = false

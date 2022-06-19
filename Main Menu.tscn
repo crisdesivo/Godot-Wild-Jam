@@ -307,7 +307,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -79.0
 custom_fonts/font = SubResource( 6 )
-text = "Authors: Cris (godot coding, art edition), JT Contreras (audio assets), MREloda (artstyle, visual assets)
+text = "Authors: Cris (Godot Scripting, UI, art edition), JT Contreras (music, sound design), MREloda (artstyle, visual assets)
 Special thanks: Buch (https://opengameart.org/users/buch), GDQuest (https://youtu.be/PKV_i4kaC0M)"
 align = 1
 __meta__ = {

@@ -31,7 +31,7 @@ func shoot():
         timeSinceShot = 0.0
         var direction = Vector2(0, 1)
         # direction = direction.normalized()
-        BulletAttack.shoot(get_parent(), position, direction, "Gravity", 1, 180, "Random", 0.1, 2, 0, 10, "res://Assets/bullet.png", false)
+        BulletAttack.shoot(get_parent().get_node("Bullets"), position, direction, "Gravity", 1, 180, "Random", 0.1, 2, 0, 10, "res://Assets/bullet.png", false)
         # var bullet = Bullet.new(position, direction, 2, 20, 1, "Gravity", 0, "res://Assets/bullet.png", false)
         # get_parent().add_child(bullet)
 

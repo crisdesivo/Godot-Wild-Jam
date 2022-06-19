@@ -95,10 +95,10 @@ func shoot():
 
         if boss:
             var bullet = Bullet.new(position, direction, 2, 20, 1, "Linear", 0, "res://Assets/orb1.png", true)
-            player.get_parent().add_child(bullet)
+            player.get_parent().get_node("Bullets").add_child(bullet)
         else:
             var bullet = Bullet.new(position, direction, 1, 20, 1, "Linear", 0, "res://Assets/orb1.png", true)
-            player.get_parent().add_child(bullet)
+            player.get_parent().get_node("Bullets").add_child(bullet)
         # bullet.scale = Vector2(0.2, 0.2)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
