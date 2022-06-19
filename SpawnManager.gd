@@ -10,7 +10,7 @@ var lastSummon = 100.0
 var summonDelay = 1.0
 var elapsed_time = 0.0
 var difficulty = 0.0
-var lastBoss = 10.0 # TODO set as 0
+var lastBoss = 0.0 # TODO set as 0
 
 var enemies = {
     "beetle": {
@@ -97,13 +97,13 @@ var enemyWaves = [
     #     },
     #     "difficulty": 0.0
     # },
-    # {
-    #     "delay": 2.0,
-    #     "enemies": {
-    #         "beetle": 10
-    #     },
-    #     "difficulty": 0
-    # },
+    {
+        "delay": 2.0,
+        "enemies": {
+            "beetle": 10
+        },
+        "difficulty": 0
+    },
     {
         "delay": 2.0,
         "enemies": {
@@ -140,7 +140,7 @@ var enemyWaves = [
         "enemies": {
             "barque": 5
         },
-        "difficulty": 0.0
+        "difficulty": 0.2
     },
     {
         "delay": 1.0,

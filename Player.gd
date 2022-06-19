@@ -42,6 +42,8 @@ var selectedOrb = 0
 var changeOrbDelay = 0.3
 var changeOrbTime = changeOrbDelay + 1
 
+var nextLevel = 10
+
 func _ready():
     get_parent().get_node("Song").play()
     maxScore = Variables.maxScore
@@ -50,11 +52,6 @@ func _ready():
         orbs.append(Orb.new(orbName, get_parent(), self))
         orbs[0].equip()
     orbs[selectedOrb].select()
-    orbs[selectedOrb].upgrade()
-    orbs[selectedOrb].upgrade()
-    orbs[selectedOrb].upgrade()
-    orbs[selectedOrb].upgrade()
-    orbs[selectedOrb].upgrade()
     pass
 
 
@@ -187,6 +184,11 @@ func addScore(points):
         file.open("user://MaxScore.save", File.WRITE)
         file.store_var(maxScore)
         file.close()
+    if score >= nextLevel: # TODO set as nextLevel 
+        nextLevel += nextLevel + pow((nextLevel/4),2)
+        get_tree().paused = true
+        get_parent().get_node("OwnedOrbSelection").visible = true
+        get_parent().get_node("OwnedOrbSelection").initialize(orbs)
 
 
 func _on_RigidBody2D_body_entered(body:Node):
@@ -226,3 +228,9 @@ func changeOrb(index: int):
 
 func getUpgrade():
     get_tree().paused = true
+
+
+func _on_OwnedOrbSelection_orbSelected(index):
+    orbs[index].upgrade()
+    get_tree().paused = false
+    get_parent().get_node("OwnedOrbSelection").visible = false

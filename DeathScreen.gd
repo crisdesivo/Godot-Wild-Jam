@@ -10,7 +10,7 @@ func _ready():
     pass # Replace with function body.
 
 func _input(event: InputEvent):
-    if time > 2:
+    if time >= 0.6:
         if event.is_action_type():
             get_tree().change_scene("res://Main Menu.tscn")
 

@@ -49,11 +49,14 @@ var equipped = false
 var stepRotation = 1*2*3.14/180
 
 onready var orbs = Data.orbs
+var orbName_ = ""
 var displayName = ""
+var level = 0
 
 func _init(orbName: String, bulletsParent: Node, player: Node):
     visible = false
     displayName = orbName
+    orbName_ = orbName
     summon = Data.orbs[orbName]["summon"]
     if Data.orbs[orbName]["passive"]:
         if "fireRateBonus" in Data.orbs[orbName]:
@@ -133,6 +136,7 @@ func upgrade():
     # damageBonus += 0.05
     damagePerBullet *= 1.05
     displayName += " +"
+    level += 1
     # addBonus()
 
 func shoot():
