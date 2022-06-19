@@ -44,8 +44,20 @@ func _init(position_: Vector2, direction_: Vector2, speed_: float, lifetime_: fl
 
     texture = load(bulletTexture) #load("res://Assets/orb1.png")
     collisionShape.shape.radius = texture.get_size().x / 2
-    if enemy:
-        scale = Vector2(0.02, 0.02)
+
+    var trail = CPUParticles2D.new()
+    trail.emitting = true
+    trail.amount = 8
+    trail.lifetime = 0.1
+    trail.local_coords = false
+    trail.gravity = Vector2(0, 0)
+    trail.texture = texture
+    trail.self_modulate = Color(1, 1, 1, 0.2)
+    add_child(trail)
+    # trail.material = ParticlesMaterial.new()
+
+    # if enemy:
+    #     scale = Vector2(0.02, 0.02)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

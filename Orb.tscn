@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://Assets/Environment/Torch_egypt/torch_frame5.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -29,13 +29,16 @@
 [ext_resource path="res://Assets/Environment/Torch_egypt/torch_frame4.png" type="Texture" id=27]
 [ext_resource path="res://Assets/Environment/Background_egypt/Pillars.png" type="Texture" id=28]
 [ext_resource path="res://Pauser.gd" type="Script" id=29]
-[ext_resource path="res://Assets/Character/Character_Orb/character_orb.png" type="Texture" id=30]
+[ext_resource path="res://Assets/Orb_Base.png" type="Texture" id=30]
 [ext_resource path="res://Assets/Environment/Background_egypt/foreground.png" type="Texture" id=31]
 [ext_resource path="res://Assets/Environment/Background_dark/Back_wall/Background_frame1.png" type="Texture" id=32]
 [ext_resource path="res://Assets/Environment/Background_dark/Back_wall/Background_frame2.png" type="Texture" id=33]
 [ext_resource path="res://Assets/Environment/Background_dark/Back_wall/Background_frame4.png" type="Texture" id=34]
 [ext_resource path="res://Assets/Environment/Background_dark/Back_wall/Background_frame5.png" type="Texture" id=35]
 [ext_resource path="res://Assets/Environment/Background_dark/Back_wall/Background_frame3.png" type="Texture" id=36]
+[ext_resource path="res://Assets/song.mp3" type="AudioStream" id=37]
+[ext_resource path="res://Bullet.gd" type="Script" id=38]
+[ext_resource path="res://Assets/bullet.png" type="Texture" id=39]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -63,16 +66,6 @@ animations = [ {
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
-"loop": true,
-"name": "Fall",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
-"loop": true,
-"name": "Idle",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 8 ), ExtResource( 9 ) ],
 "loop": true,
 "name": "Run",
@@ -82,7 +75,22 @@ animations = [ {
 "loop": true,
 "name": "Jump",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "Fall",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
 } ]
+
+[sub_resource type="CanvasItemMaterial" id=7]
+
+[sub_resource type="CanvasItemMaterial" id=6]
+blend_mode = 1
 
 [sub_resource type="DynamicFont" id=3]
 size = 40
@@ -101,12 +109,10 @@ scale = Vector2( 3.19095, 3.21429 )
 script = ExtResource( 17 )
 
 [node name="Background" type="AnimatedSprite" parent="Stage"]
-scale = Vector2( 1, 1 )
 frames = SubResource( 2 )
 centered = false
 
 [node name="Background2" type="AnimatedSprite" parent="Stage"]
-scale = Vector2( 1, 1 )
 frames = SubResource( 5 )
 centered = false
 
@@ -114,40 +120,33 @@ centered = false
 position = Vector2( 199, 134.089 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
-frame = 3
 playing = true
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="Stage"]
 position = Vector2( 317.147, 103.6 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
-frame = 4
 playing = true
 
 [node name="AnimatedSprite3" type="AnimatedSprite" parent="Stage"]
 position = Vector2( 81.7938, 101.733 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
-frame = 4
 playing = true
 
 [node name="Pillars" type="Sprite" parent="Stage"]
-scale = Vector2( 1, 1 )
 texture = ExtResource( 28 )
 centered = false
 
 [node name="Pillars2" type="Sprite" parent="Stage"]
-scale = Vector2( 1, 1 )
 texture = ExtResource( 19 )
 centered = false
 
 [node name="Foreground" type="Sprite" parent="Stage"]
-scale = Vector2( 1, 1 )
 texture = ExtResource( 31 )
 centered = false
 
 [node name="Foreground2" type="Sprite" parent="Stage"]
-scale = Vector2( 1, 1 )
 texture = ExtResource( 16 )
 centered = false
 
@@ -159,17 +158,15 @@ script = ExtResource( 2 )
 position = Vector2( 0, 20 )
 frames = SubResource( 1 )
 animation = "Idle"
-frame = 1
 playing = true
 
 [node name="Sprite" type="Sprite" parent="Player"]
-self_modulate = Color( 1, 1, 1, 0.243137 )
-scale = Vector2( 3, 3 )
+material = SubResource( 7 )
 texture = ExtResource( 30 )
 
 [node name="Sprite2" type="Sprite" parent="Player/Sprite"]
-self_modulate = Color( 1, 0.960784, 0, 1 )
-show_behind_parent = true
+self_modulate = Color( 0, 0.345098, 1, 1 )
+material = SubResource( 6 )
 texture = ExtResource( 30 )
 
 [node name="ReloadBar" type="ColorRect" parent="Player"]
@@ -190,6 +187,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Bullet" type="Sprite" parent="Player"]
+visible = false
+position = Vector2( 31, 27 )
+texture = ExtResource( 39 )
+script = ExtResource( 38 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Player/Bullet"]
+self_modulate = Color( 1, 1, 1, 0.25098 )
+position = Vector2( -1, 0 )
+local_coords = false
+texture = ExtResource( 39 )
+gravity = Vector2( 0, 0 )
+
 [node name="SpawnManager" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
@@ -208,9 +218,14 @@ stream = ExtResource( 21 )
 [node name="OrbSwitch" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 18 )
 
+[node name="Song" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 37 )
+
 [node name="GUI" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -20.0
+margin_right = -20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -145,7 +145,7 @@ func shootDirection(direction: Vector2):
     if self.timeSinceShot >= finalReloadTime:
         self.timeSinceShot = 0
         if summon:
-            var ally = Summon.new(summonSpeed, load(summonTexture), 0.2, "")
+            var ally = Summon.new(summonSpeed, load(summonTexture), 1, "")
             ally.position = get_parent().position
             player_.get_parent().add_child(ally)
         else:

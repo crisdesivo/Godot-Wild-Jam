@@ -41,6 +41,7 @@ var changeOrbDelay = 0.3
 var changeOrbTime = changeOrbDelay + 1
 
 func _ready():
+    get_parent().get_node("Song").play()
     maxScore = Variables.maxScore
     get_parent().get_node("GUI/MaxScore").text = "Max Score: " + str(Variables.maxScore)
     for orbName in Variables.initialOrbs:

@@ -26,7 +26,7 @@ var enemies = {
         "texture": ghostieAsset,
         "speed": 2,
         "hp": 3,
-        "scale": 1,
+        "scale": 1.5,
         "rotate": true,
         "flip": false,
         "movement": "homing",
