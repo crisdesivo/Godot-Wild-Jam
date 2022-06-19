@@ -134,8 +134,8 @@ func _init(orbName: String, bulletsParent: Node, player: Node):
 func upgrade():
     if passive:
         removeBonus()
-        fireRateBonus *= 1.1
-        damageBonus *= 1.1
+        fireRateBonus *= 1.2
+        damageBonus *= 1.2
         addBonus()
     reloadTime /= 1.05
     damagePerBullet *= 1.05
