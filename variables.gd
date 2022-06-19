@@ -3,7 +3,7 @@ extends Node
 var maxScore = 0
 var lastScore = 0
 
-var initialOrbs = ["Shockwave Orb", "Orb of Power", "Orb of Rapid Fire"]
+var initialOrbs = ["Water Gun Orb", "Orb of Power", "Orb of Rapid Fire"]
 
 func _ready():
     var file = File.new()

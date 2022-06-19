@@ -155,7 +155,7 @@ func shoot():
             var direction = (player_.get_viewport().get_mouse_position() ) - player_.position
             direction = direction.normalized()
             BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime, self.bulletTexture, false)
-            # get_parent().get_node("AttackSound").play()
+            player_.get_parent().get_node("AttackSound").play()
             # rotate(shootRotationMultiplier*stepRotation)
             # player_.rotate(-shootRotationMultiplier*stepRotation)
 
@@ -168,7 +168,7 @@ func shootDirection(direction: Vector2):
             player_.get_parent().add_child(ally)
         else:
             BulletAttack.shoot(self.bulletParent_, self.player_.position, direction, self.bulletMovement, self.bulletsPerShot, self.spreadAngle, self.spreadDistribution, self.damagePerBullet*(1+player_.damageBonus), self.bulletSpeed, self.pierce, self.bulletLifetime, self.bulletTexture, false)
-            # player_.get_parent().get_node("AttackSound").play()
+            player_.get_parent().get_node("AttackSound").play()
             # rotate(shootRotationMultiplier*stepRotation)
 
 func select():

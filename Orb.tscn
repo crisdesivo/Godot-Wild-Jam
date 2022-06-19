@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Assets/Environment/Torch_egypt/torch_frame5.png" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -44,6 +44,7 @@
 [ext_resource path="res://Assets/attack.mp3" type="AudioStream" id=42]
 [ext_resource path="res://light.tscn" type="PackedScene" id=43]
 [ext_resource path="res://OwnedOrbsSelect.tscn" type="PackedScene" id=44]
+[ext_resource path="res://Hit1Sound.gd" type="Script" id=45]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -136,7 +137,6 @@ centered = false
 position = Vector2( 200.254, 135.645 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
-frame = 1
 playing = true
 
 [node name="Light2D" parent="Stage/AnimatedSprite" instance=ExtResource( 43 )]
@@ -146,7 +146,6 @@ visible = false
 position = Vector2( 319.654, 103.6 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
-frame = 1
 playing = true
 
 [node name="Light2D" parent="Stage/AnimatedSprite2" instance=ExtResource( 43 )]
@@ -156,7 +155,6 @@ visible = false
 position = Vector2( 82.1072, 103.911 )
 scale = Vector2( 0.626773, 0.622221 )
 frames = SubResource( 4 )
-frame = 1
 playing = true
 
 [node name="Light2D" parent="Stage/AnimatedSprite3" instance=ExtResource( 43 )]
@@ -274,6 +272,8 @@ stream = ExtResource( 37 )
 
 [node name="AttackSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 42 )
+volume_db = -7.0
+script = ExtResource( 45 )
 
 [node name="GUI" type="Control" parent="."]
 light_mask = 2
