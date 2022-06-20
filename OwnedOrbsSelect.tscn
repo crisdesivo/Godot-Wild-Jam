@@ -54,19 +54,29 @@ custom_constants/separation = 40
 alignment = 1
 
 [node name="Prompt" type="Label" parent="VBoxContainer"]
-margin_top = 202.0
+margin_top = 175.0
 margin_right = 880.0
-margin_bottom = 277.0
+margin_bottom = 250.0
 custom_fonts/font = SubResource( 1 )
 text = "Select an orb to upgrade"
 align = 1
 valign = 1
 uppercase = true
 
-[node name="Orbs" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 317.0
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_top = 290.0
 margin_right = 880.0
-margin_bottom = 417.0
+margin_bottom = 304.0
+text = "*Upgrades increase firerate and damage"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Orbs" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 344.0
+margin_right = 880.0
+margin_bottom = 444.0
 alignment = 1
 
 [node name="Orb1" type="Button" parent="VBoxContainer/Orbs"]

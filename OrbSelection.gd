@@ -51,6 +51,7 @@ func showOrb(orb):
     # print(orb.orbName)
     $VBoxContainer/ColorRect/Name.text = orb.orbName
     selectedOrb = orb.orbName
+    $VBoxContainer/ColorRect/Description.text = Data.orbs[orb.orbName]["description"]
 
 func changePrompt(prompt: String):
     $VBoxContainer/Prompt.text = prompt

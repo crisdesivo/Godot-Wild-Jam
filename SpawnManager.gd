@@ -89,7 +89,7 @@ var enemies = {
 
 var enemyWaves = [
     {
-        "delay": 2.0,
+        "delay": 5.0,
         "enemies": {
             "beetle": 10
         },
@@ -141,12 +141,12 @@ var enemyWaves = [
         "difficulty": 0.5
     },
     {
-        "delay": 1.0,
+        "delay": 2.0,
         "enemies": {
             "beetle": 100,
-            "ghostie": 50
+            "ghostie": 10
         },
-        "difficulty": 2
+        "difficulty": 5
     },
     {
         "delay": 1.0,
@@ -154,7 +154,7 @@ var enemyWaves = [
             "beetle": 20,
             "barque": 10
         },
-        "difficulty": 2.5
+        "difficulty": 7
     },
 ]
 

@@ -4,8 +4,8 @@
 [ext_resource path="res://OrbSelectionContainer.gd" type="Script" id=2]
 
 [node name="Selector" type="ColorRect"]
-margin_right = 1270.0
-margin_bottom = 720.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color( 0.0784314, 0.133333, 0.25098, 1 )
 script = ExtResource( 2 )
 __meta__ = {

@@ -93,7 +93,7 @@ var orbs = {
         "summon": true,
         "reloadTime": 10,
         "summonLifeTime": 5,
-        "summonReload": 1,
+        "summonReload": 0.1,
         "summonSpeed": 3,
         "summonLocation": "Top",
         "summonTexture": "res://Assets/orb1.png",
